@@ -5,7 +5,7 @@
  * @param x - represents x-coordinate
  * @param y - represents y-coordinate
  */
-Vec2::Vec2(int x, int y)
+Vec2::Vec2(float x, float y)
 {
     components[0] = x;
     components[1] = y;
@@ -21,7 +21,7 @@ Vec2::Vec2()
 /**
  * Getter for x component
  */
-int Vec2::getX()
+float Vec2::getX()
 {
     return components[0];
 }
@@ -29,7 +29,7 @@ int Vec2::getX()
 /**
  * Getter for y component
  */
-int Vec2::getY()
+float Vec2::getY()
 {
     return components[1];
 }

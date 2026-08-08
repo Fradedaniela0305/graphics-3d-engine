@@ -6,47 +6,61 @@
 
 /**
  * Constructor to create a 4x4 matrix
- * @param c1 - column 1 of the matrix
- * @param c2 - column 2 of the matrix
- * @param c3 - column 3 of the matrix
- * @param c4 - column 4 of the matrix
+ * @param r1 - row 1 of the matrix
+ * @param r2 - row 2 of the matrix
+ * @param r3 - row 3 of the matrix
+ * @param r4 - row 4 of the matrix
  */
-Matrix4x4::Matrix4x4(Vec4 c1, Vec4 c2, Vec4 c3, Vec4 c4)
+Matrix4x4::Matrix4x4(Vec4 r1, Vec4 r2, Vec4 r3, Vec4 r4)
 {
-    cols[0] = c1;
-    cols[1] = c2;
-    cols[2] = c3;
-    cols[3] = c4;
+    rows[0] = r1;
+    rows[1] = r2;
+    rows[2] = r1;
+    rows[3] = r4;
+}
+
+Vec4 Matrix4x4::transform(Vec4 vector) {
+
+    float vecX = vector.getX();
+    float vecY = vector.getY();
+    float vecZ = vector.getZ();
+    float vecW = vector.getW();
+
+    float x = vecX*rows[0].getX() + vecY*rows[0].getY() + vecZ*rows[0].getZ()  + vecW*rows[0].getW();
+    float y = vecX*rows[1].getX() + vecY*rows[1].getY() + vecZ*rows[1].getZ()  + vecW*rows[1].getW();
+    float z = vecX*rows[2].getX() + vecY*rows[2].getY() + vecZ*rows[2].getZ()  + vecW*rows[2].getW();
+    float w = vecX*rows[3].getX() + vecY*rows[3].getY() + vecZ*rows[3].getZ()  + vecW*rows[3].getW();
+
+    return Vec4{x,y,z,w};
 }
 
 /**
  * Getter for column one
  */
-Vec4 Matrix4x4::getC1()
+Vec4 Matrix4x4::getR1()
 {
-    return cols[0];
+    return rows[0];
 }
 
 /**
  * Getter for column two
  */
-Vec4 Matrix4x4::getC2()
+Vec4 Matrix4x4::getR2()
 {
-    return cols[1];
-
+    return rows[1];
 }
 
 /**
  * Getter for column three
  */
-Vec4 Matrix4x4::getC3()
+Vec4 Matrix4x4::getR3()
 {
-    return cols[2];
+    return rows[2];
 }
 /**
  * Getter for column four
  */
-Vec4 Matrix4x4::getC4()
+Vec4 Matrix4x4::getR4()
 {
-    return cols[3];
+    return rows[3];
 }

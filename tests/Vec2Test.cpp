@@ -7,9 +7,9 @@
 
 TEST(Vec2Test, ConstructorSetsComponents)
 {
-    Vec2 v(3, 4);
-    EXPECT_EQ(v.getX(), 3);
-    EXPECT_EQ(v.getY(), 4);
+    Vec2 v(3.0f, 4.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
 }
 
 TEST(Vec2Test, DefaultConstructorConstructs)

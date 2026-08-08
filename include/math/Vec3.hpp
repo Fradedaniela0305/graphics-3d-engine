@@ -13,7 +13,7 @@ public:
      * @param y - represents y-coordinate
      * @param z - represents z-coordinate
      */
-    Vec3(int x, int y, int z);
+    Vec3(float x, float y, float z);
 
     /**
      * Constructor to create a 3rd dimensional vector
@@ -23,18 +23,18 @@ public:
     /**
      * Getter for x component
      */
-    int getX();
+    float getX();
 
     /**
      * Getter for y component
      */
-    int getY();
+    float getY();
 
     /**
      * Getter for z component
      */
-    int getZ();
+    float getZ();
 
 private:
-    int components[3];
+    float components[3];
 };

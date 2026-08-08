@@ -6,7 +6,7 @@
  * @param y - represents y-coordinate
  * @param z - represents z-coordinate
  */
-Vec3::Vec3(int x, int y, int z)
+Vec3::Vec3(float x, float y, float z)
 {
     components[0] = x;
     components[1] = y;
@@ -23,7 +23,7 @@ Vec3::Vec3()
 /**
  * Getter for x component
  */
-int Vec3::getX()
+float Vec3::getX()
 {
     return components[0];
 }
@@ -31,7 +31,7 @@ int Vec3::getX()
 /**
  * Getter for y component
  */
-int Vec3::getY()
+float Vec3::getY()
 {
     return components[1];
 }
@@ -39,7 +39,7 @@ int Vec3::getY()
 /**
  * Getter for z component
  */
-int Vec3::getZ()
+float Vec3::getZ()
 {
     return components[2];
 }

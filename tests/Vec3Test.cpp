@@ -7,10 +7,10 @@
 
 TEST(Vec3Test, ConstructorSetsComponents)
 {
-    Vec3 v(3, 4, 5);
-    EXPECT_EQ(v.getX(), 3);
-    EXPECT_EQ(v.getY(), 4);
-    EXPECT_EQ(v.getZ(), 5);
+    Vec3 v(3.0f, 4.0f, 5.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
 }
 
 TEST(Vec3Test, DefaultConstructorConstructs)

@@ -10,36 +10,43 @@ class Matrix4x4 {
 
     /**
      * Constructor to create a 4x4 matrix
-     * @param c1 - column 1 of the matrix
-     * @param c2 - column 2 of the matrix
-     * @param c3 - column 3 of the matrix
-     * @param c4 - column 4 of the matrix
+     * @param r1 - row 1 of the matrix
+     * @param r2 - row 2 of the matrix
+     * @param r3 - row 3 of the matrix
+     * @param r4 - row 4 of the matrix
      */
-    Matrix4x4(Vec4 c1, Vec4 c2, Vec4 c3, Vec4 c4);
+    Matrix4x4(Vec4 r1, Vec4 r2, Vec4 r3, Vec4 r4);
+
 
     /**
-     * Getter for column one
+     * Transforms a vector by a 4x4 matrix
+     * @param vector - vector to be transformed
      */
-    Vec4 getC1();
+    Vec4 transform(Vec4 vector);
 
     /**
-     * Getter for column two
+     * Getter for row one
      */
-    Vec4 getC2();
+    Vec4 getR1();
 
     /**
-     * Getter for column three
+     * Getter for row two
      */
-    Vec4 getC3();
+    Vec4 getR2();
+
     /**
-     * Getter for column four
+     * Getter for row three
      */
-    Vec4 getC4();
+    Vec4 getR3();
+    /**
+     * Getter for row four
+     */
+    Vec4 getR4();
 
 
     private:
 
-    Vec4 cols[4];
+    Vec4 rows[4];
 
      
 

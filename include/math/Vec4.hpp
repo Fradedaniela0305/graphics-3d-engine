@@ -14,34 +14,35 @@ public:
      * @param z - represents z-coordinate
      * @param w - represents w-coordinate
      */
-    Vec4(int x, int y, int z, int w);
+    Vec4(float x, float y, float z, float w);
 
     /**
      * Constructor to create a 4th dimensional vector
      */
     Vec4();
 
+
     /**
      * Getter for x component
      */
-    int getX();
+    float getX();
 
     /**
      * Getter for y component
      */
 
-    int getY();
+    float getY();
 
     /**
      * Getter for z component
      */
-    int getZ();
+    float getZ();
 
     /**
      * Getter for w component
      */
-    int getW();
+    float getW();
 
 private:
-    int components[4];
+    float components[4];
 };

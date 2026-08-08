@@ -12,7 +12,7 @@ public:
      * @param x - represents x-coordinate
      * @param y - represents y-coordinate
      */
-    Vec2(int x, int y);
+    Vec2(float x, float y);
 
     /**
      * Constructor to create a 2nd dimensional vector
@@ -22,13 +22,13 @@ public:
     /**
      * Getter for x component
      */
-    int getX();
+    float getX();
 
     /**
      * Getter for y component
      */
-    int getY();
+    float getY();
 
 private:
-    int components[2];
+    float components[2];
 };
