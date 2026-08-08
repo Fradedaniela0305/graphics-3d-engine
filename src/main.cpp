@@ -29,7 +29,9 @@ int main()
     Vec4 r3{0, 0, q, -zNear * q};
     Vec4 r4{0, 0, 1, 0};
 
-    Matrix4x4 transformationMatrix{}
+    Matrix4x4 transformationMatrix{r1,r2,r3,r4};
+
+    
 
 
 
@@ -52,13 +54,12 @@ int main()
         window.clear({20, 20, 20});
 
         window.drawRect(50, 50, 100, 60, {200, 60, 60});
-        window.drawCircle(x, y, 30, {60, 160, 220});
+
 
         if (window.isMouseButtonDown(SDL_BUTTON_LEFT))
         {
             int mouseX, mouseY;
             window.getMousePosition(mouseX, mouseY);
-            window.drawLine(x, y, mouseX, mouseY, {230, 230, 230});
         }
 
         window.present();

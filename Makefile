@@ -12,6 +12,9 @@ DEPS := $(OBJS:.o=.d)
 MATH_SRCS := $(shell find src/math -name '*.cpp')
 MATH_OBJS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(MATH_SRCS))
 
+MODEL_SRCS := src/Mesh.cpp src/Triangle.cpp
+MODEL_OBJS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(MODEL_SRCS))
+
 TEST_SRCS := $(shell find tests -name '*.cpp')
 TEST_OBJS := $(patsubst tests/%.cpp,$(BUILD_DIR)/tests/%.o,$(TEST_SRCS))
 TEST_DEPS := $(TEST_OBJS:.o=.d)
@@ -39,9 +42,9 @@ $(BUILD_DIR)/tests/%.o: tests/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(GTEST_CXXFLAGS) -MMD -MP -c $< -o $@
 
-$(TEST_TARGET): $(MATH_OBJS) $(TEST_OBJS)
+$(TEST_TARGET): $(MATH_OBJS) $(MODEL_OBJS) $(TEST_OBJS)
 	@mkdir -p $(dir $@)
-	$(CXX) $(MATH_OBJS) $(TEST_OBJS) -o $@ $(GTEST_LDFLAGS)
+	$(CXX) $(MATH_OBJS) $(MODEL_OBJS) $(TEST_OBJS) -o $@ $(GTEST_LDFLAGS)
 
 test: $(TEST_TARGET)
 	./$(TEST_TARGET)

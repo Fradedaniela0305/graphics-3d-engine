@@ -48,7 +48,8 @@ build/main.o: src/main.cpp include/Window.hpp \
   /opt/homebrew/include/SDL2/SDL_timer.h \
   /opt/homebrew/include/SDL2/SDL_version.h \
   /opt/homebrew/include/SDL2/SDL_locale.h \
-  /opt/homebrew/include/SDL2/SDL_misc.h
+  /opt/homebrew/include/SDL2/SDL_misc.h include/math/Vec4.hpp \
+  include/math/Matrix4x4.hpp
 
 include/Window.hpp:
 
@@ -153,3 +154,7 @@ include/Window.hpp:
 /opt/homebrew/include/SDL2/SDL_locale.h:
 
 /opt/homebrew/include/SDL2/SDL_misc.h:
+
+include/math/Vec4.hpp:
+
+include/math/Matrix4x4.hpp:

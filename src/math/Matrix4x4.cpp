@@ -15,7 +15,7 @@ Matrix4x4::Matrix4x4(Vec4 r1, Vec4 r2, Vec4 r3, Vec4 r4)
 {
     rows[0] = r1;
     rows[1] = r2;
-    rows[2] = r1;
+    rows[2] = r3;
     rows[3] = r4;
 }
 
@@ -35,7 +35,7 @@ Vec4 Matrix4x4::transform(Vec4 vector) {
 }
 
 /**
- * Getter for column one
+ * Getter for row one
  */
 Vec4 Matrix4x4::getR1()
 {
@@ -43,7 +43,7 @@ Vec4 Matrix4x4::getR1()
 }
 
 /**
- * Getter for column two
+ * Getter for row two
  */
 Vec4 Matrix4x4::getR2()
 {
@@ -51,14 +51,14 @@ Vec4 Matrix4x4::getR2()
 }
 
 /**
- * Getter for column three
+ * Getter for row three
  */
 Vec4 Matrix4x4::getR3()
 {
     return rows[2];
 }
 /**
- * Getter for column four
+ * Getter for row four
  */
 Vec4 Matrix4x4::getR4()
 {
