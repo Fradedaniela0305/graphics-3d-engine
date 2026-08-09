@@ -5,12 +5,12 @@
 #include <gtest/gtest.h>
 #include "Mesh.hpp"
 #include "Triangle.hpp"
-#include "math/Vec2.hpp"
+#include "math/Vec4.hpp"
 
 TEST(MeshTest, ConstructorSetsMesh)
 {
-    Triangle t1(Vec2(0.0f, 0.0f), Vec2(1.0f, 0.0f), Vec2(0.0f, 1.0f));
-    Triangle t2(Vec2(1.0f, 1.0f), Vec2(2.0f, 1.0f), Vec2(1.0f, 2.0f));
+    Triangle t1(Vec4(0.0f, 0.0f, 0.0f, 1.0f), Vec4(1.0f, 0.0f, 0.0f, 1.0f), Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    Triangle t2(Vec4(1.0f, 1.0f, 0.0f, 1.0f), Vec4(2.0f, 1.0f, 0.0f, 1.0f), Vec4(1.0f, 2.0f, 0.0f, 1.0f));
     std::vector<Triangle> triangles{t1, t2};
 
     Mesh mesh(triangles);
@@ -28,7 +28,7 @@ TEST(MeshTest, DefaultConstructorConstructs)
 TEST(MeshTest, AddTriangleAppendsTriangle)
 {
     Mesh mesh;
-    Triangle t(Vec2(0.0f, 0.0f), Vec2(1.0f, 0.0f), Vec2(0.0f, 1.0f));
+    Triangle t(Vec4(0.0f, 0.0f, 0.0f, 1.0f), Vec4(1.0f, 0.0f, 0.0f, 1.0f), Vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
     mesh.addTriangle(t);
 

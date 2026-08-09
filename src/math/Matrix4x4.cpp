@@ -19,7 +19,11 @@ Matrix4x4::Matrix4x4(Vec4 r1, Vec4 r2, Vec4 r3, Vec4 r4)
     rows[3] = r4;
 }
 
-Vec4 Matrix4x4::transform(Vec4 vector) {
+/**
+ * Constructor to create a 4x4 matrix
+ * @param vector - vector that is transformed
+ */
+Vec4 Matrix4x4::transformVector(Vec4 vector) {
 
     float vecX = vector.getX();
     float vecY = vector.getY();
@@ -32,6 +36,21 @@ Vec4 Matrix4x4::transform(Vec4 vector) {
     float w = vecX*rows[3].getX() + vecY*rows[3].getY() + vecZ*rows[3].getZ()  + vecW*rows[3].getW();
 
     return Vec4{x,y,z,w};
+}
+
+/**
+ * Transforms a triangle by a 4x4 matrix
+ * @param triangle - triangle to be transformed
+ */
+Triangle Matrix4x4::transformTriangle(Triangle triangle) {
+
+    Vec4 p1 = transformVector(triangle.getP1());
+    Vec4 p2 = transformVector(triangle.getP2());
+    Vec4 p3 = transformVector(triangle.getP3());
+
+    
+
+    return Triangle{p1, p2, p3};
 }
 
 /**

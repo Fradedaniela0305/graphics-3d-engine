@@ -4,27 +4,51 @@
 
 #include <gtest/gtest.h>
 #include "Triangle.hpp"
-#include "math/Vec2.hpp"
+#include "math/Vec4.hpp"
 
 TEST(TriangleTest, ConstructorSetsPoints)
 {
-    Vec2 p1(1.0f, 2.0f);
-    Vec2 p2(3.0f, 4.0f);
-    Vec2 p3(5.0f, 6.0f);
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
     Triangle t(p1, p2, p3);
 
     EXPECT_FLOAT_EQ(t.getP1().getX(), 1.0f);
     EXPECT_FLOAT_EQ(t.getP1().getY(), 2.0f);
+    EXPECT_FLOAT_EQ(t.getP1().getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(t.getP1().getW(), 1.0f);
 
     EXPECT_FLOAT_EQ(t.getP2().getX(), 3.0f);
     EXPECT_FLOAT_EQ(t.getP2().getY(), 4.0f);
+    EXPECT_FLOAT_EQ(t.getP2().getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(t.getP2().getW(), 1.0f);
 
     EXPECT_FLOAT_EQ(t.getP3().getX(), 5.0f);
     EXPECT_FLOAT_EQ(t.getP3().getY(), 6.0f);
+    EXPECT_FLOAT_EQ(t.getP3().getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(t.getP3().getW(), 1.0f);
 }
 
 TEST(TriangleTest, DefaultConstructorConstructs)
 {
     Triangle t;
     (void)t;
+}
+
+TEST(TriangleTest, PrintOutputsPoints)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    testing::internal::CaptureStdout();
+    t.print();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_EQ(output,
+              "Triangle(\n"
+              "  P1: Vec4(1, 2, 3, 1)\n"
+              "  P2: Vec4(3, 4, 3, 1)\n"
+              "  P3: Vec4(5, 6, 3, 1)\n"
+              ")\n");
 }

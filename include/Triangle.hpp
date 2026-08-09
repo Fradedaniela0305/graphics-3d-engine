@@ -1,9 +1,9 @@
 #pragma once
-#include "math/Vec2.hpp"
+#include "math/Vec4.hpp"
 #include <vector>
 
 /**
- * Represents a triangle with 3 points in 3-dimensional space
+ * Represents a triangle with 3 points in 3-dimensional space, points are in clockwise order
  */
 class Triangle
 {
@@ -12,7 +12,7 @@ public:
     /**
      * Constructor to create a triangle in 2-dimensional space with 3 points
      */
-    Triangle(Vec2 p1, Vec2 p2, Vec2 p3);
+    Triangle(Vec4 p1, Vec4 p2, Vec4 p3);
 
     /**
      * Constructor to create a triangle in 2-dimensional
@@ -22,19 +22,23 @@ public:
     /**
      * Getter for point one
      */
-    Vec2 getP1();
+    Vec4 getP1();
 
     /**
      * Getter for point two
      */
-    Vec2 getP2();
+    Vec4 getP2();
 
     /**
      * Getter for point three
      */
-    Vec2 getP3();
+    Vec4 getP3();
 
+    /**
+     * Prints the triangle's points to standard output
+     */
+    void print();
 
 private:
-    std::vector<Vec2> points;
+    std::vector<Vec4> points;
 };

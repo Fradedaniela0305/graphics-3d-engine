@@ -1,5 +1,6 @@
-build/Window.o: src/Window.cpp include/Window.hpp \
-  /opt/homebrew/include/SDL2/SDL.h /opt/homebrew/include/SDL2/SDL_main.h \
+build/Window.o: src/Window.cpp include/Window.hpp include/Triangle.hpp \
+  include/math/Vec4.hpp /opt/homebrew/include/SDL2/SDL.h \
+  /opt/homebrew/include/SDL2/SDL_main.h \
   /opt/homebrew/include/SDL2/SDL_stdinc.h \
   /opt/homebrew/include/SDL2/SDL_config.h \
   /opt/homebrew/include/SDL2/SDL_platform.h \
@@ -51,6 +52,10 @@ build/Window.o: src/Window.cpp include/Window.hpp \
   /opt/homebrew/include/SDL2/SDL_misc.h
 
 include/Window.hpp:
+
+include/Triangle.hpp:
+
+include/math/Vec4.hpp:
 
 /opt/homebrew/include/SDL2/SDL.h:
 

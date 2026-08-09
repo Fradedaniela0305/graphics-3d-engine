@@ -1,6 +1,7 @@
 #include "Window.hpp"
 #include <iostream>
 
+
 Window::Window(const char* title, int width, int height)
     : title(title), width(width), height(height) {
 }
@@ -78,6 +79,12 @@ void Window::drawPixel(int x, int y, Color color) {
 void Window::drawLine(int x1, int y1, int x2, int y2, Color color) {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
+void Window::drawTriangle(Triangle triangle, Color color) {
+    drawLine(triangle.getP1().getX(), triangle.getP1().getY(), triangle.getP2().getX(), triangle.getP2().getY(), color);
+    drawLine(triangle.getP2().getX(), triangle.getP2().getY(), triangle.getP3().getX(), triangle.getP3().getY(), color);
+    drawLine(triangle.getP3().getX(), triangle.getP3().getY(), triangle.getP1().getX(), triangle.getP1().getY(), color);
 }
 
 void Window::drawRect(int x, int y, int w, int h, Color color, bool filled) {
