@@ -3,6 +3,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <cmath>
 #include "Triangle.hpp"
 #include "math/Vec4.hpp"
 
@@ -33,6 +34,40 @@ TEST(TriangleTest, DefaultConstructorConstructs)
 {
     Triangle t;
     (void)t;
+}
+
+TEST(TriangleTest, ConstructorCalculatesNormalizedNormal)
+{
+    Vec4 p1(0.0f, 0.0f, 0.0f, 1.0f);
+    Vec4 p2(1.0f, 0.0f, 0.0f, 1.0f);
+    Vec4 p3(0.0f, 1.0f, 0.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_FLOAT_EQ(t.getNormal().getX(), 0.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getY(), 0.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getZ(), 1.0f);
+
+    float length = std::sqrt(t.getNormal().getX() * t.getNormal().getX() +
+                              t.getNormal().getY() * t.getNormal().getY() +
+                              t.getNormal().getZ() * t.getNormal().getZ());
+    EXPECT_FLOAT_EQ(length, 1.0f);
+}
+
+TEST(TriangleTest, NormalIsNormalizedRegardlessOfEdgeLength)
+{
+    Vec4 p1(0.0f, 0.0f, 0.0f, 1.0f);
+    Vec4 p2(5.0f, 0.0f, 0.0f, 1.0f);
+    Vec4 p3(0.0f, 8.0f, 0.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_FLOAT_EQ(t.getNormal().getX(), 0.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getY(), 0.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getZ(), 1.0f);
+
+    float length = std::sqrt(t.getNormal().getX() * t.getNormal().getX() +
+                              t.getNormal().getY() * t.getNormal().getY() +
+                              t.getNormal().getZ() * t.getNormal().getZ());
+    EXPECT_FLOAT_EQ(length, 1.0f);
 }
 
 TEST(TriangleTest, PrintOutputsPoints)

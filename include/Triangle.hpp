@@ -1,9 +1,11 @@
 #pragma once
 #include "math/Vec4.hpp"
+#include "math/Vec3.hpp"
 #include <vector>
 
 /**
- * Represents a triangle with 3 points in 3-dimensional space, points are in clockwise order
+ * Represents a triangle with 3 points in 3-dimensional space, points are in clockwise order.
+ * Points are fixed at construction time and cannot be changed afterwards.
  */
 class Triangle
 {
@@ -35,10 +37,21 @@ public:
     Vec4 getP3();
 
     /**
+     * Getter for the triangle's normal vector
+     */
+    Vec3 getNormal();
+
+    /**
      * Prints the triangle's points to standard output
      */
     void print();
 
 private:
     std::vector<Vec4> points;
+    Vec3 normal;
+
+    /**
+     * Calculates the normalized normal vector of the triangle from its points
+     */
+    Vec3 calculateNormal();
 };

@@ -48,6 +48,37 @@ TEST(Vec2Test, ScaleComponentsMultipliesEachComponentByOwnFactor)
     EXPECT_FLOAT_EQ(v.getY(), 4.0f);
 }
 
+TEST(Vec2Test, SubtractSubtractsEachComponent)
+{
+    Vec2 v(3.0f, 4.0f);
+    Vec2 other(1.0f, 5.0f);
+    Vec2 result = v.subtract(other);
+    EXPECT_FLOAT_EQ(result.getX(), 2.0f);
+    EXPECT_FLOAT_EQ(result.getY(), -1.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+}
+
+TEST(Vec2Test, CrossCalculatesThisCrossOther)
+{
+    Vec2 v(1.0f, 0.0f);
+    Vec2 other(0.0f, 1.0f);
+    float result = v.cross(other);
+    EXPECT_FLOAT_EQ(result, 1.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 1.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 0.0f);
+}
+
+TEST(Vec2Test, CrossIsNotCommutative)
+{
+    Vec2 v(2.0f, 3.0f);
+    Vec2 other(5.0f, 6.0f);
+    float result = v.cross(other);
+    float reversed = other.cross(v);
+    EXPECT_FLOAT_EQ(result, -3.0f);
+    EXPECT_FLOAT_EQ(reversed, 3.0f);
+}
+
 TEST(Vec2Test, PrintOutputsComponents)
 {
     Vec2 v(3.0f, 4.0f);

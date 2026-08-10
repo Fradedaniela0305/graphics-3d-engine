@@ -38,41 +38,77 @@ int main()
     float y = 1.0f / std::sqrt(3.0f);
     float z = 1.0f / std::sqrt(3.0f);
 
-    Matrix4x4 translationMat{
+    Matrix4x4 translationMat {
         Vec4{1, 0, 0, 0},
         Vec4{0, 1, 0, 0},
         Vec4{0, 0, 1, 3},
         Vec4{0, 0, 0, 1}};
 
-    // south
-    Triangle southTop{Vec4(0, 1, 0, 1), Vec4(1, 1, 0, 1), Vec4(1, 0, 0, 1)};
-    Triangle southBottom{Vec4(0, 1, 0, 1), Vec4(1, 0, 0, 1), Vec4(0, 0, 0, 1)};
+    Triangle southTop{
+        Vec4(0, 1, 0, 1),
+        Vec4(1, 1, 0, 1),
+        Vec4(1, 0, 0, 1)};
 
-    // north
-    Triangle northTop{Vec4(0, 1, 1, 1), Vec4(1, 1, 1, 1), Vec4(1, 0, 1, 1)};
-    Triangle northBottom{Vec4(0, 1, 1, 1), Vec4(1, 0, 1, 1), Vec4(0, 0, 1, 1)};
+    Triangle southBottom{
+        Vec4(0, 1, 0, 1),
+        Vec4(1, 0, 0, 1),
+        Vec4(0, 0, 0, 1)};
 
-    // east
-    Triangle eastTop{Vec4(1, 1, 0, 1), Vec4(1, 1, 1, 1), Vec4(1, 0, 1, 1)};
-    Triangle eastBottom{Vec4(1, 1, 0, 1), Vec4(1, 0, 1, 1), Vec4(1, 0, 0, 1)};
+    Triangle northTop{
+        Vec4(0, 1, 1, 1),
+        Vec4(1, 0, 1, 1),
+        Vec4(1, 1, 1, 1)};
 
-    // west
-    Triangle westTop{Vec4(0, 1, 0, 1), Vec4(0, 1, 1, 1), Vec4(0, 0, 1, 1)};
-    Triangle westBottom{Vec4(0, 1, 0, 1), Vec4(0, 0, 1, 1), Vec4(0, 0, 0, 1)};
+    Triangle northBottom{
+        Vec4(0, 1, 1, 1),
+        Vec4(0, 0, 1, 1),
+        Vec4(1, 0, 1, 1)};
 
-    // top
-    Triangle topTop{Vec4(0, 1, 0, 1), Vec4(0, 1, 1, 1), Vec4(1, 1, 1, 1)};
-    Triangle topBottom{Vec4(0, 1, 0, 1), Vec4(1, 1, 1, 1), Vec4(1, 1, 0, 1)};
+    Triangle eastTop{
+        Vec4(1, 1, 0, 1),
+        Vec4(1, 1, 1, 1),
+        Vec4(1, 0, 1, 1)};
 
-    // bottom
-    Triangle bottomTop{Vec4(0, 0, 0, 1), Vec4(0, 0, 1, 1), Vec4(1, 0, 1, 1)};
-    Triangle bottomBottom{Vec4(0, 0, 0, 1), Vec4(1, 0, 1, 1), Vec4(1, 0, 0, 1)};
+    Triangle eastBottom{
+        Vec4(1, 1, 0, 1),
+        Vec4(1, 0, 1, 1),
+        Vec4(1, 0, 0, 1)};
+
+    Triangle westTop{
+        Vec4(0, 1, 0, 1),
+        Vec4(0, 0, 1, 1),
+        Vec4(0, 1, 1, 1)};
+
+    Triangle westBottom{
+        Vec4(0, 1, 0, 1),
+        Vec4(0, 0, 0, 1),
+        Vec4(0, 0, 1, 1)};
+
+    Triangle topTop{
+        Vec4(0, 1, 0, 1),
+        Vec4(0, 1, 1, 1),
+        Vec4(1, 1, 1, 1)};
+
+    Triangle topBottom{
+        Vec4(0, 1, 0, 1),
+        Vec4(1, 1, 1, 1),
+        Vec4(1, 1, 0, 1)};
+
+    Triangle bottomTop{
+        Vec4(0, 0, 0, 1),
+        Vec4(1, 0, 1, 1),
+        Vec4(0, 0, 1, 1)};
+
+    Triangle bottomBottom{
+        Vec4(0, 0, 0, 1),
+        Vec4(1, 0, 0, 1),
+        Vec4(1, 0, 1, 1)};
 
     std::vector<Triangle> triangles = {southTop, southBottom, northTop, northBottom, eastTop, eastBottom, westTop, westBottom, topTop, topBottom, bottomTop, bottomBottom};
 
     Mesh squareMesh{triangles};
-
     float angle = 45.0f * M_PI / 180.0f;
+    Matrix4x4 rotationMat;
 
     while (!window.shouldClose())
     {
@@ -87,7 +123,7 @@ int main()
             float c = std::cos(angle);
             float s = std::sin(angle);
 
-            Matrix4x4 rotationMat{
+            rotationMat = Matrix4x4{
                 Vec4{
                     c + x * x * (1 - c),
                     y * x * (1 - c) + z * s,
@@ -110,15 +146,19 @@ int main()
 
             Triangle transformedTriangle = rotationMat.transformTriangle(t);
             Triangle translatedTriangle = translationMat.transformTriangle(transformedTriangle);
+
+            transformedTriangle.getNormal().print();
+
+            if (transformedTriangle.getNormal().getZ() < 0)
+            {
+                continue;
+            }
+
             Triangle projectedTriangle = projectionMat.transformTriangle(translatedTriangle);
 
-            Vec4 p1 = projectedTriangle.getP1();
-            Vec4 p2 = projectedTriangle.getP2();
-            Vec4 p3 = projectedTriangle.getP3();
-
-            p1 = p1.perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
-            p2 = p2.perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
-            p3 = p3.perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
+            Vec4 p1 = projectedTriangle.getP1().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
+            Vec4 p2 = projectedTriangle.getP2().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
+            Vec4 p3 = projectedTriangle.getP3().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
 
             Triangle drawnTriangle{p1, p2, p3};
 

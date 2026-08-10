@@ -60,6 +60,22 @@ Vec2 Vec2::scale(float xFactor, float yFactor)
 }
 
 /**
+ * Returns a new vector representing this vector minus the given vector
+ */
+Vec2 Vec2::subtract(Vec2 other)
+{
+    return Vec2(components[0] - other.getX(), components[1] - other.getY());
+}
+
+/**
+ * Returns the cross product of this vector and the given vector, calculated as this x other
+ */
+float Vec2::cross(Vec2 other)
+{
+    return components[0] * other.getY() - components[1] * other.getX();
+}
+
+/**
  * Prints the vector's components to standard output
  */
 void Vec2::print()

@@ -70,6 +70,25 @@ Vec3 Vec3::scale(float xFactor, float yFactor, float zFactor)
 }
 
 /**
+ * Returns a new vector representing this vector minus the given vector
+ */
+Vec3 Vec3::subtract(Vec3 other)
+{
+    return Vec3(components[0] - other.getX(), components[1] - other.getY(), components[2] - other.getZ());
+}
+
+/**
+ * Returns the cross product of this vector and the given vector, calculated as this x other
+ */
+Vec3 Vec3::cross(Vec3 other)
+{
+    return Vec3(
+        components[1] * other.getZ() - components[2] * other.getY(),
+        components[2] * other.getX() - components[0] * other.getZ(),
+        components[0] * other.getY() - components[1] * other.getX());
+}
+
+/**
  * Prints the vector's components to standard output
  */
 void Vec3::print()

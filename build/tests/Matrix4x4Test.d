@@ -20,7 +20,8 @@ build/tests/Matrix4x4Test.o: tests/Matrix4x4Test.cpp \
   /opt/homebrew/opt/googletest/include/gtest/gtest-typed-test.h \
   /opt/homebrew/opt/googletest/include/gtest/gtest_pred_impl.h \
   /opt/homebrew/opt/googletest/include/gtest/gtest_prod.h \
-  include/math/Matrix4x4.hpp include/math/Vec4.hpp include/Triangle.hpp
+  include/math/Matrix4x4.hpp include/math/Vec4.hpp include/Triangle.hpp \
+  include/math/Vec3.hpp
 
 /opt/homebrew/opt/googletest/include/gtest/gtest.h:
 
@@ -69,3 +70,5 @@ include/math/Matrix4x4.hpp:
 include/math/Vec4.hpp:
 
 include/Triangle.hpp:
+
+include/math/Vec3.hpp:

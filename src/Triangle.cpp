@@ -1,5 +1,6 @@
 #include "Triangle.hpp"
 #include <iostream>
+#include <cmath>
 
 /**
  * Constructor to create a triangle in 2-dimensional space with 3 points
@@ -9,6 +10,7 @@ Triangle::Triangle(Vec4 p1, Vec4 p2, Vec4 p3)
     points.push_back(p1);
     points.push_back(p2);
     points.push_back(p3);
+    normal = calculateNormal();
 }
 
 /**
@@ -40,6 +42,34 @@ Vec4 Triangle::getP2()
 Vec4 Triangle::getP3()
 {
     return points[2];
+}
+
+/**
+ * Getter for the triangle's normal vector
+ */
+Vec3 Triangle::getNormal()
+{
+    return normal;
+}
+
+/**
+ * Calculates the normalized normal vector of the triangle from its points
+ */
+Vec3 Triangle::calculateNormal()
+{
+    Vec4 edge1v4 = points[1].subtract(points[0]);
+    Vec4 edge2v4 = points[2].subtract(points[0]);
+    Vec3 edge1(edge1v4.getX(), edge1v4.getY(), edge1v4.getZ());
+    Vec3 edge2(edge2v4.getX(), edge2v4.getY(), edge2v4.getZ());
+
+    Vec3 cross = edge1.cross(edge2);
+
+    float length = std::sqrt(cross.getX() * cross.getX() + cross.getY() * cross.getY() + cross.getZ() * cross.getZ());
+    if (length == 0)
+    {
+        return cross;
+    }
+    return cross.scale(1.0f / length);
 }
 
 /**

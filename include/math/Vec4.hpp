@@ -68,9 +68,23 @@ public:
     Vec4 scale(float xFactor, float yFactor, float zFactor, float wFactor);
 
     /**
+     * Returns a new vector representing this vector minus the given vector
+     * @param other - vector to subtract from this vector
+     */
+    Vec4 subtract(Vec4 other);
+
+    /**
      * Returns a new vector with the x, y, and z components divided by w (perspective divide)
      */
     Vec4 perspectiveDivide();
+
+    /**
+     * Returns the cross product of this vector and the given vector, calculated as this x other.
+     * Only the x, y, and z components participate; the w component of the result is always 0,
+     * since the cross product represents a direction rather than a position.
+     * @param other - vector to cross with this vector
+     */
+    Vec4 cross(Vec4 other);
 
     /**
      * Prints the vector's components to standard output

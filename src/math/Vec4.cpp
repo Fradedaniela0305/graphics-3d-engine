@@ -81,6 +81,14 @@ Vec4 Vec4::scale(float xFactor, float yFactor, float zFactor, float wFactor)
 }
 
 /**
+ * Returns a new vector representing this vector minus the given vector
+ */
+Vec4 Vec4::subtract(Vec4 other)
+{
+    return Vec4(components[0] - other.getX(), components[1] - other.getY(), components[2] - other.getZ(), components[3] - other.getW());
+}
+
+/**
  * Returns a new vector with the x and y components divided by w (perspective divide)
  */
 Vec4 Vec4::perspectiveDivide()
@@ -91,6 +99,18 @@ Vec4 Vec4::perspectiveDivide()
         return Vec4(components[0] / components[3], components[1] / components[3], components[2] / components[3], components[3]);
     } 
     return Vec4(components[0], components[1], components[2], components[3]);
+}
+
+/**
+ * Returns the cross product of this vector and the given vector, calculated as this x other
+ */
+Vec4 Vec4::cross(Vec4 other)
+{
+    return Vec4(
+        components[1] * other.getZ() - components[2] * other.getY(),
+        components[2] * other.getX() - components[0] * other.getZ(),
+        components[0] * other.getY() - components[1] * other.getX(),
+        0.0f);
 }
 
 /**

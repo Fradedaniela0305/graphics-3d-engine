@@ -50,6 +50,19 @@ public:
     Vec2 scale(float xFactor, float yFactor);
 
     /**
+     * Returns a new vector representing this vector minus the given vector
+     * @param other - vector to subtract from this vector
+     */
+    Vec2 subtract(Vec2 other);
+
+    /**
+     * Returns the cross product of this vector and the given vector, calculated as this x other.
+     * In 2 dimensions this is a scalar equal to the z-component of the equivalent 3-dimensional cross product.
+     * @param other - vector to cross with this vector
+     */
+    float cross(Vec2 other);
+
+    /**
      * Prints the vector's components to standard output
      */
     void print();

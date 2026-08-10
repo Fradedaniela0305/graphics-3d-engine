@@ -5,10 +5,10 @@
 /**
  * Represents a 4x4 matrix
  */
-class Matrix4x4 {
+class Matrix4x4
+{
 
-    public:
-
+public:
     /**
      * Constructor to create a 4x4 matrix
      * @param r1 - row 1 of the matrix
@@ -18,6 +18,10 @@ class Matrix4x4 {
      */
     Matrix4x4(Vec4 r1, Vec4 r2, Vec4 r3, Vec4 r4);
 
+    /**
+     * Constructor to create a 4x4 matrix
+     */
+    Matrix4x4();
 
     /**
      * Transforms a vector by a 4x4 matrix
@@ -50,13 +54,6 @@ class Matrix4x4 {
      */
     Vec4 getR4();
 
-
-    private:
-
+private:
     Vec4 rows[4];
-
-     
-
 };
-
-

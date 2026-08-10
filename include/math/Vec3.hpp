@@ -58,6 +58,18 @@ public:
     Vec3 scale(float xFactor, float yFactor, float zFactor);
 
     /**
+     * Returns a new vector representing this vector minus the given vector
+     * @param other - vector to subtract from this vector
+     */
+    Vec3 subtract(Vec3 other);
+
+    /**
+     * Returns the cross product of this vector and the given vector, calculated as this x other
+     * @param other - vector to cross with this vector
+     */
+    Vec3 cross(Vec3 other);
+
+    /**
      * Prints the vector's components to standard output
      */
     void print();
