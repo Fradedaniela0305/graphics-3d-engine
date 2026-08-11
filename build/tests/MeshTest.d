@@ -20,8 +20,7 @@ build/tests/MeshTest.o: tests/MeshTest.cpp \
   /opt/homebrew/opt/googletest/include/gtest/gtest-typed-test.h \
   /opt/homebrew/opt/googletest/include/gtest/gtest_pred_impl.h \
   /opt/homebrew/opt/googletest/include/gtest/gtest_prod.h \
-  include/Mesh.hpp include/Triangle.hpp include/math/Vec4.hpp \
-  include/math/Vec3.hpp
+  include/Mesh.hpp include/Triangle.hpp include/math/Vec4.hpp
 
 /opt/homebrew/opt/googletest/include/gtest/gtest.h:
 
@@ -70,5 +69,3 @@ include/Mesh.hpp:
 include/Triangle.hpp:
 
 include/math/Vec4.hpp:
-
-include/math/Vec3.hpp:

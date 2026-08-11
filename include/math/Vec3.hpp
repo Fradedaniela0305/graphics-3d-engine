@@ -70,6 +70,12 @@ public:
     Vec3 cross(Vec3 other);
 
     /**
+     * Returns the dot product of this vector and the given vector
+     * @param other - vector to dot with this vector
+     */
+    float dot(Vec3 other);
+
+    /**
      * Prints the vector's components to standard output
      */
     void print();

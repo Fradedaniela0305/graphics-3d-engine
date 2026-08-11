@@ -1,6 +1,5 @@
 #pragma once
 #include "math/Vec4.hpp"
-#include "math/Vec3.hpp"
 #include <vector>
 
 /**
@@ -39,7 +38,7 @@ public:
     /**
      * Getter for the triangle's normal vector
      */
-    Vec3 getNormal();
+    Vec4 getNormal();
 
     /**
      * Prints the triangle's points to standard output
@@ -48,10 +47,12 @@ public:
 
 private:
     std::vector<Vec4> points;
-    Vec3 normal;
+    Vec4 normal;
 
     /**
-     * Calculates the normalized normal vector of the triangle from its points
+     * Calculates the normalized normal vector of the triangle from its points.
+     * The resulting vector's w component is always 0, since a normal represents
+     * a direction rather than a position.
      */
-    Vec3 calculateNormal();
+    Vec4 calculateNormal();
 };

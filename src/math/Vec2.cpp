@@ -76,6 +76,14 @@ float Vec2::cross(Vec2 other)
 }
 
 /**
+ * Returns the dot product of this vector and the given vector
+ */
+float Vec2::dot(Vec2 other)
+{
+    return components[0] * other.getX() + components[1] * other.getY();
+}
+
+/**
  * Prints the vector's components to standard output
  */
 void Vec2::print()

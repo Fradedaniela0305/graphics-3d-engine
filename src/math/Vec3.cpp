@@ -89,6 +89,14 @@ Vec3 Vec3::cross(Vec3 other)
 }
 
 /**
+ * Returns the dot product of this vector and the given vector
+ */
+float Vec3::dot(Vec3 other)
+{
+    return components[0] * other.getX() + components[1] * other.getY() + components[2] * other.getZ();
+}
+
+/**
  * Prints the vector's components to standard output
  */
 void Vec3::print()

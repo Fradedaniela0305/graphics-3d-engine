@@ -79,6 +79,33 @@ TEST(Vec2Test, CrossIsNotCommutative)
     EXPECT_FLOAT_EQ(reversed, 3.0f);
 }
 
+TEST(Vec2Test, DotCalculatesDotProduct)
+{
+    Vec2 v(3.0f, 4.0f);
+    Vec2 other(1.0f, 5.0f);
+    float result = v.dot(other);
+    EXPECT_FLOAT_EQ(result, 23.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+}
+
+TEST(Vec2Test, DotIsCommutative)
+{
+    Vec2 v(2.0f, 3.0f);
+    Vec2 other(5.0f, 6.0f);
+    float result = v.dot(other);
+    float reversed = other.dot(v);
+    EXPECT_FLOAT_EQ(result, reversed);
+}
+
+TEST(Vec2Test, DotOfPerpendicularVectorsIsZero)
+{
+    Vec2 v(1.0f, 0.0f);
+    Vec2 other(0.0f, 1.0f);
+    float result = v.dot(other);
+    EXPECT_FLOAT_EQ(result, 0.0f);
+}
+
 TEST(Vec2Test, PrintOutputsComponents)
 {
     Vec2 v(3.0f, 4.0f);

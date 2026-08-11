@@ -114,6 +114,14 @@ Vec4 Vec4::cross(Vec4 other)
 }
 
 /**
+ * Returns the dot product of this vector and the given vector
+ */
+float Vec4::dot(Vec4 other)
+{
+    return components[0] * other.getX() + components[1] * other.getY() + components[2] * other.getZ() + components[3] * other.getW();
+}
+
+/**
  * Prints the vector's components to standard output
  */
 void Vec4::print()

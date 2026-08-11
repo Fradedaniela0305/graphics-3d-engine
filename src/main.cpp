@@ -32,13 +32,15 @@ int main()
     Vec4 r3{0, 0, q, -fNear * q};
     Vec4 r4{0, 0, 1, 0};
 
+    Vec4 camera(0,0,0,0);
+
     Matrix4x4 projectionMat{r1, r2, r3, r4};
 
     float x = 1.0f / std::sqrt(3.0f);
     float y = 1.0f / std::sqrt(3.0f);
     float z = 1.0f / std::sqrt(3.0f);
 
-    Matrix4x4 translationMat {
+    Matrix4x4 translationMat{
         Vec4{1, 0, 0, 0},
         Vec4{0, 1, 0, 0},
         Vec4{0, 0, 1, 3},
@@ -110,16 +112,17 @@ int main()
     float angle = 45.0f * M_PI / 180.0f;
     Matrix4x4 rotationMat;
 
+    bool printed = false;
     while (!window.shouldClose())
     {
         window.pollEvents();
 
         window.clear({20, 20, 20});
 
+        angle += 0.001;
         for (Triangle &t : squareMesh.getMesh())
         {
 
-            angle += 0.00001;
             float c = std::cos(angle);
             float s = std::sin(angle);
 
@@ -147,9 +150,10 @@ int main()
             Triangle transformedTriangle = rotationMat.transformTriangle(t);
             Triangle translatedTriangle = translationMat.transformTriangle(transformedTriangle);
 
-            transformedTriangle.getNormal().print();
+            Vec4 normal = translatedTriangle.getNormal();
+            Vec4 cameraToPlaneVec = translatedTriangle.getP1().subtract(camera);
 
-            if (transformedTriangle.getNormal().getZ() < 0)
+            if (normal.dot(cameraToPlaneVec) > 0)
             {
                 continue;
             }

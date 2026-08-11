@@ -47,7 +47,7 @@ Vec4 Triangle::getP3()
 /**
  * Getter for the triangle's normal vector
  */
-Vec3 Triangle::getNormal()
+Vec4 Triangle::getNormal()
 {
     return normal;
 }
@@ -55,14 +55,12 @@ Vec3 Triangle::getNormal()
 /**
  * Calculates the normalized normal vector of the triangle from its points
  */
-Vec3 Triangle::calculateNormal()
+Vec4 Triangle::calculateNormal()
 {
-    Vec4 edge1v4 = points[1].subtract(points[0]);
-    Vec4 edge2v4 = points[2].subtract(points[0]);
-    Vec3 edge1(edge1v4.getX(), edge1v4.getY(), edge1v4.getZ());
-    Vec3 edge2(edge2v4.getX(), edge2v4.getY(), edge2v4.getZ());
+    Vec4 edge1 = points[1].subtract(points[0]);
+    Vec4 edge2 = points[2].subtract(points[0]);
 
-    Vec3 cross = edge1.cross(edge2);
+    Vec4 cross = edge1.cross(edge2);
 
     float length = std::sqrt(cross.getX() * cross.getX() + cross.getY() * cross.getY() + cross.getZ() * cross.getZ());
     if (length == 0)

@@ -63,6 +63,12 @@ public:
     float cross(Vec2 other);
 
     /**
+     * Returns the dot product of this vector and the given vector
+     * @param other - vector to dot with this vector
+     */
+    float dot(Vec2 other);
+
+    /**
      * Prints the vector's components to standard output
      */
     void print();

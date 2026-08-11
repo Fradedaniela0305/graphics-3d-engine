@@ -46,6 +46,7 @@ TEST(TriangleTest, ConstructorCalculatesNormalizedNormal)
     EXPECT_FLOAT_EQ(t.getNormal().getX(), 0.0f);
     EXPECT_FLOAT_EQ(t.getNormal().getY(), 0.0f);
     EXPECT_FLOAT_EQ(t.getNormal().getZ(), 1.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getW(), 0.0f);
 
     float length = std::sqrt(t.getNormal().getX() * t.getNormal().getX() +
                               t.getNormal().getY() * t.getNormal().getY() +
@@ -63,6 +64,7 @@ TEST(TriangleTest, NormalIsNormalizedRegardlessOfEdgeLength)
     EXPECT_FLOAT_EQ(t.getNormal().getX(), 0.0f);
     EXPECT_FLOAT_EQ(t.getNormal().getY(), 0.0f);
     EXPECT_FLOAT_EQ(t.getNormal().getZ(), 1.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getW(), 0.0f);
 
     float length = std::sqrt(t.getNormal().getX() * t.getNormal().getX() +
                               t.getNormal().getY() * t.getNormal().getY() +

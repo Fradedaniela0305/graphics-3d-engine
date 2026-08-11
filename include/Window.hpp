@@ -110,6 +110,15 @@ class Window {
     void drawTriangle(Triangle triangle, Color color);
 
     /**
+     * Draws a filled triangle
+     * @param triangle - the triangle to draw
+     * @param color - color of the triangle
+     */
+    void drawFilledTriangle(Triangle triangle, Color color);
+
+    
+
+    /**
      * Getter for whether a keyboard key is currently pressed
      * @param key - the SDL scancode of the key to check
      */
