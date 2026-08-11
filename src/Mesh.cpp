@@ -29,3 +29,13 @@ std::vector<Triangle> Mesh::getMesh()
 {
     return mesh;
 }
+
+/**
+ * Loader for .obj files
+ */
+bool Mesh::loadFromObjectFile(std::string path) {
+
+
+
+
+}

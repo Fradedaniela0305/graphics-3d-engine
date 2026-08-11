@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Triangle.hpp"
+#include <string> 
 
 /**
  * Represents a mesh
@@ -28,6 +29,11 @@ public:
      * Getter for mesh
      */
     std::vector<Triangle> getMesh();
+
+    /**
+     * Loader for .obj files
+     */
+    bool loadFromObjectFile(std::string path);
 
 
 private:

@@ -12,7 +12,7 @@ DEPS := $(OBJS:.o=.d)
 MATH_SRCS := $(shell find src/math -name '*.cpp')
 MATH_OBJS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(MATH_SRCS))
 
-MODEL_SRCS := src/Mesh.cpp src/Triangle.cpp
+MODEL_SRCS := src/Mesh.cpp src/Triangle.cpp src/Color.cpp
 MODEL_OBJS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(MODEL_SRCS))
 
 TEST_SRCS := $(shell find tests -name '*.cpp')

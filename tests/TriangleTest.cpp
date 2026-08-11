@@ -72,6 +72,84 @@ TEST(TriangleTest, NormalIsNormalizedRegardlessOfEdgeLength)
     EXPECT_FLOAT_EQ(length, 1.0f);
 }
 
+TEST(TriangleTest, GetBottomPointReturnsPointWithLargestY)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 9.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    Vec4 bottom = t.getBottomPoint();
+    EXPECT_FLOAT_EQ(bottom.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(bottom.getY(), 9.0f);
+    EXPECT_FLOAT_EQ(bottom.getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(bottom.getW(), 1.0f);
+}
+
+TEST(TriangleTest, GetTopPointReturnsPointWithSmallestY)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 9.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, -4.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    Vec4 top = t.getTopPoint();
+    EXPECT_FLOAT_EQ(top.getX(), 5.0f);
+    EXPECT_FLOAT_EQ(top.getY(), -4.0f);
+    EXPECT_FLOAT_EQ(top.getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(top.getW(), 1.0f);
+}
+
+TEST(TriangleTest, GetBottomAndTopPointBreakTiesInFavorOfEarlierPoint)
+{
+    Vec4 p1(1.0f, 5.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 5.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 5.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_FLOAT_EQ(t.getBottomPoint().getX(), 1.0f);
+    EXPECT_FLOAT_EQ(t.getTopPoint().getX(), 1.0f);
+}
+
+TEST(TriangleTest, GetLeftmostPointReturnsPointWithSmallestX)
+{
+    Vec4 p1(4.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(-3.0f, 9.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    Vec4 leftmost = t.getLeftmostPoint();
+    EXPECT_FLOAT_EQ(leftmost.getX(), -3.0f);
+    EXPECT_FLOAT_EQ(leftmost.getY(), 9.0f);
+    EXPECT_FLOAT_EQ(leftmost.getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(leftmost.getW(), 1.0f);
+}
+
+TEST(TriangleTest, GetRightmostPointReturnsPointWithLargestX)
+{
+    Vec4 p1(4.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(-3.0f, 9.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    Vec4 rightmost = t.getRightmostPoint();
+    EXPECT_FLOAT_EQ(rightmost.getX(), 5.0f);
+    EXPECT_FLOAT_EQ(rightmost.getY(), 6.0f);
+    EXPECT_FLOAT_EQ(rightmost.getZ(), 3.0f);
+    EXPECT_FLOAT_EQ(rightmost.getW(), 1.0f);
+}
+
+TEST(TriangleTest, GetLeftmostAndRightmostPointBreakTiesInFavorOfEarlierPoint)
+{
+    Vec4 p1(5.0f, 1.0f, 3.0f, 1.0f);
+    Vec4 p2(5.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 3.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_FLOAT_EQ(t.getLeftmostPoint().getY(), 1.0f);
+    EXPECT_FLOAT_EQ(t.getRightmostPoint().getY(), 1.0f);
+}
+
 TEST(TriangleTest, PrintOutputsPoints)
 {
     Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);

@@ -1,6 +1,8 @@
-build/Triangle.o: src/Triangle.cpp include/Triangle.hpp \
+build/Triangle.o: src/Triangle.cpp include/Triangle.hpp include/Color.hpp \
   include/math/Vec4.hpp
 
 include/Triangle.hpp:
+
+include/Color.hpp:
 
 include/math/Vec4.hpp:

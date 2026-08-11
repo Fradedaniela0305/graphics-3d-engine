@@ -1,14 +1,8 @@
 #pragma once
+#include "Color.hpp"
 #include "Triangle.hpp"
 #include <SDL.h>
 #include <cstdint>
-
-/**
- * Represents an RGBA color, with 8 bits per channel
- */
-struct Color {
-    uint8_t r, g, b, a = 255;
-};
 
 /**
  * Owns the SDL2 window/renderer, the event loop, input state, and timing.
@@ -115,8 +109,6 @@ class Window {
      * @param color - color of the triangle
      */
     void drawFilledTriangle(Triangle triangle, Color color);
-
-    
 
     /**
      * Getter for whether a keyboard key is currently pressed

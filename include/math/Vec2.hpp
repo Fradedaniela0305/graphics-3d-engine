@@ -63,7 +63,8 @@ public:
     float cross(Vec2 other);
 
     /**
-     * Returns the dot product of this vector and the given vector
+     * Returns the dot product of the normalized versions of this vector and the given vector,
+     * equivalent to the cosine of the angle between them. Returns 0 if either vector has zero length.
      * @param other - vector to dot with this vector
      */
     float dot(Vec2 other);

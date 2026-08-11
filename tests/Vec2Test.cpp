@@ -79,12 +79,12 @@ TEST(Vec2Test, CrossIsNotCommutative)
     EXPECT_FLOAT_EQ(reversed, 3.0f);
 }
 
-TEST(Vec2Test, DotCalculatesDotProduct)
+TEST(Vec2Test, DotCalculatesDotProductOfNormalizedVectors)
 {
     Vec2 v(3.0f, 4.0f);
     Vec2 other(1.0f, 5.0f);
     float result = v.dot(other);
-    EXPECT_FLOAT_EQ(result, 23.0f);
+    EXPECT_NEAR(result, 0.9021342f, 1e-6f);
     EXPECT_FLOAT_EQ(v.getX(), 3.0f);
     EXPECT_FLOAT_EQ(v.getY(), 4.0f);
 }
@@ -104,6 +104,30 @@ TEST(Vec2Test, DotOfPerpendicularVectorsIsZero)
     Vec2 other(0.0f, 1.0f);
     float result = v.dot(other);
     EXPECT_FLOAT_EQ(result, 0.0f);
+}
+
+TEST(Vec2Test, DotOfParallelVectorsIsOne)
+{
+    Vec2 v(2.0f, 0.0f);
+    Vec2 other(5.0f, 0.0f);
+    float result = v.dot(other);
+    EXPECT_FLOAT_EQ(result, 1.0f);
+}
+
+TEST(Vec2Test, DotOfOppositeVectorsIsNegativeOne)
+{
+    Vec2 v(2.0f, 0.0f);
+    Vec2 other(-5.0f, 0.0f);
+    float result = v.dot(other);
+    EXPECT_FLOAT_EQ(result, -1.0f);
+}
+
+TEST(Vec2Test, DotWithZeroLengthVectorIsZero)
+{
+    Vec2 v(3.0f, 4.0f);
+    Vec2 zero(0.0f, 0.0f);
+    EXPECT_FLOAT_EQ(v.dot(zero), 0.0f);
+    EXPECT_FLOAT_EQ(zero.dot(v), 0.0f);
 }
 
 TEST(Vec2Test, PrintOutputsComponents)

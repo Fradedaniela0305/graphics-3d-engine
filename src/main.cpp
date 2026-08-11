@@ -111,6 +111,7 @@ int main()
     Mesh squareMesh{triangles};
     float angle = 45.0f * M_PI / 180.0f;
     Matrix4x4 rotationMat;
+    Vec4 lightVec{0.0,0.0,-1.0,0.0};
 
     bool printed = false;
     while (!window.shouldClose())
@@ -166,7 +167,9 @@ int main()
 
             Triangle drawnTriangle{p1, p2, p3};
 
-            window.drawTriangle(drawnTriangle, {255, 255, 255});
+            Color triangleColor = Color::getColor(normal.dot(lightVec));
+
+            window.drawFilledTriangle(drawnTriangle, triangleColor);
         }
 
         window.present();

@@ -1,4 +1,5 @@
 #include "math/Vec3.hpp"
+#include <cmath>
 #include <iostream>
 
 /**
@@ -89,11 +90,17 @@ Vec3 Vec3::cross(Vec3 other)
 }
 
 /**
- * Returns the dot product of this vector and the given vector
+ * Returns the dot product of the normalized versions of this vector and the given vector
  */
 float Vec3::dot(Vec3 other)
 {
-    return components[0] * other.getX() + components[1] * other.getY() + components[2] * other.getZ();
+    float thisLength = std::sqrt(components[0] * components[0] + components[1] * components[1] + components[2] * components[2]);
+    float otherLength = std::sqrt(other.getX() * other.getX() + other.getY() * other.getY() + other.getZ() * other.getZ());
+    if (thisLength == 0 || otherLength == 0)
+    {
+        return 0.0f;
+    }
+    return (components[0] * other.getX() + components[1] * other.getY() + components[2] * other.getZ()) / (thisLength * otherLength);
 }
 
 /**

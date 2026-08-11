@@ -124,12 +124,12 @@ TEST(Vec4Test, CrossResultHasWComponentOfZero)
     EXPECT_FLOAT_EQ(result.getW(), 0.0f);
 }
 
-TEST(Vec4Test, DotCalculatesDotProduct)
+TEST(Vec4Test, DotCalculatesDotProductOfNormalizedVectors)
 {
     Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
     Vec4 other(1.0f, 5.0f, 2.0f, 0.5f);
     float result = v.dot(other);
-    EXPECT_FLOAT_EQ(result, 36.0f);
+    EXPECT_NEAR(result, 0.7058145f, 1e-6f);
     EXPECT_FLOAT_EQ(v.getX(), 3.0f);
     EXPECT_FLOAT_EQ(v.getY(), 4.0f);
     EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
@@ -151,6 +151,30 @@ TEST(Vec4Test, DotOfPerpendicularVectorsIsZero)
     Vec4 other(0.0f, 1.0f, 0.0f, 0.0f);
     float result = v.dot(other);
     EXPECT_FLOAT_EQ(result, 0.0f);
+}
+
+TEST(Vec4Test, DotOfParallelVectorsIsOne)
+{
+    Vec4 v(2.0f, 0.0f, 0.0f, 0.0f);
+    Vec4 other(5.0f, 0.0f, 0.0f, 0.0f);
+    float result = v.dot(other);
+    EXPECT_FLOAT_EQ(result, 1.0f);
+}
+
+TEST(Vec4Test, DotOfOppositeVectorsIsNegativeOne)
+{
+    Vec4 v(2.0f, 0.0f, 0.0f, 0.0f);
+    Vec4 other(-5.0f, 0.0f, 0.0f, 0.0f);
+    float result = v.dot(other);
+    EXPECT_FLOAT_EQ(result, -1.0f);
+}
+
+TEST(Vec4Test, DotWithZeroLengthVectorIsZero)
+{
+    Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
+    Vec4 zero(0.0f, 0.0f, 0.0f, 0.0f);
+    EXPECT_FLOAT_EQ(v.dot(zero), 0.0f);
+    EXPECT_FLOAT_EQ(zero.dot(v), 0.0f);
 }
 
 TEST(Vec4Test, PrintOutputsComponents)

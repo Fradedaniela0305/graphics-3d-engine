@@ -1,6 +1,6 @@
-build/main.o: src/main.cpp include/Window.hpp include/Triangle.hpp \
-  include/math/Vec4.hpp /opt/homebrew/include/SDL2/SDL.h \
-  /opt/homebrew/include/SDL2/SDL_main.h \
+build/main.o: src/main.cpp include/Window.hpp include/Color.hpp \
+  include/Triangle.hpp include/math/Vec4.hpp \
+  /opt/homebrew/include/SDL2/SDL.h /opt/homebrew/include/SDL2/SDL_main.h \
   /opt/homebrew/include/SDL2/SDL_stdinc.h \
   /opt/homebrew/include/SDL2/SDL_config.h \
   /opt/homebrew/include/SDL2/SDL_platform.h \
@@ -53,6 +53,8 @@ build/main.o: src/main.cpp include/Window.hpp include/Triangle.hpp \
   include/Mesh.hpp
 
 include/Window.hpp:
+
+include/Color.hpp:
 
 include/Triangle.hpp:
 
