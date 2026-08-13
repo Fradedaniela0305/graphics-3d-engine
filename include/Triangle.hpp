@@ -22,7 +22,6 @@ public:
      */
     Triangle();
 
-
     /**
      * Constructor to create a triangle in 3-d with color and normal given
      */
@@ -47,6 +46,11 @@ public:
      * Getter for triangle's color
      */
     Color getColor();
+
+    /**
+     * Setter for triangle's color
+     */
+    void setColor(Color color);
 
     /**
      * Getter for the triangle's normal vector
@@ -81,6 +85,11 @@ public:
      * Prints the triangle's points to standard output
      */
     void print();
+
+    /**
+     * Returns midpoint of zth value of the triangle
+     */
+    float zthMidPoint();
 
 private:
     std::vector<Vec4> points;

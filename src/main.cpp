@@ -5,6 +5,7 @@
 #include "Triangle.hpp"
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 int main()
 {
@@ -43,86 +44,98 @@ int main()
     Matrix4x4 translationMat{
         Vec4{1, 0, 0, 0},
         Vec4{0, 1, 0, 0},
-        Vec4{0, 0, 1, 3},
+        Vec4{0, 0, 1, 8},
         Vec4{0, 0, 0, 1}};
 
-    Triangle southTop{
-        Vec4(0, 1, 0, 1),
-        Vec4(1, 1, 0, 1),
-        Vec4(1, 0, 0, 1)};
+    // Triangle southTop{
+    //     Vec4(0, 1, 0, 1),
+    //     Vec4(1, 1, 0, 1),
+    //     Vec4(1, 0, 0, 1)};
 
-    Triangle southBottom{
-        Vec4(0, 1, 0, 1),
-        Vec4(1, 0, 0, 1),
-        Vec4(0, 0, 0, 1)};
+    // Triangle southBottom{
+    //     Vec4(0, 1, 0, 1),
+    //     Vec4(1, 0, 0, 1),
+    //     Vec4(0, 0, 0, 1)};
 
-    Triangle northTop{
-        Vec4(0, 1, 1, 1),
-        Vec4(1, 0, 1, 1),
-        Vec4(1, 1, 1, 1)};
+    // Triangle northTop{
+    //     Vec4(0, 1, 1, 1),
+    //     Vec4(1, 0, 1, 1),
+    //     Vec4(1, 1, 1, 1)};
 
-    Triangle northBottom{
-        Vec4(0, 1, 1, 1),
-        Vec4(0, 0, 1, 1),
-        Vec4(1, 0, 1, 1)};
+    // Triangle northBottom{
+    //     Vec4(0, 1, 1, 1),
+    //     Vec4(0, 0, 1, 1),
+    //     Vec4(1, 0, 1, 1)};
 
-    Triangle eastTop{
-        Vec4(1, 1, 0, 1),
-        Vec4(1, 1, 1, 1),
-        Vec4(1, 0, 1, 1)};
+    // Triangle eastTop{
+    //     Vec4(1, 1, 0, 1),
+    //     Vec4(1, 1, 1, 1),
+    //     Vec4(1, 0, 1, 1)};
 
-    Triangle eastBottom{
-        Vec4(1, 1, 0, 1),
-        Vec4(1, 0, 1, 1),
-        Vec4(1, 0, 0, 1)};
+    // Triangle eastBottom{
+    //     Vec4(1, 1, 0, 1),
+    //     Vec4(1, 0, 1, 1),
+    //     Vec4(1, 0, 0, 1)};
 
-    Triangle westTop{
-        Vec4(0, 1, 0, 1),
-        Vec4(0, 0, 1, 1),
-        Vec4(0, 1, 1, 1)};
+    // Triangle westTop{
+    //     Vec4(0, 1, 0, 1),
+    //     Vec4(0, 0, 1, 1),
+    //     Vec4(0, 1, 1, 1)};
 
-    Triangle westBottom{
-        Vec4(0, 1, 0, 1),
-        Vec4(0, 0, 0, 1),
-        Vec4(0, 0, 1, 1)};
+    // Triangle westBottom{
+    //     Vec4(0, 1, 0, 1),
+    //     Vec4(0, 0, 0, 1),
+    //     Vec4(0, 0, 1, 1)};
 
-    Triangle topTop{
-        Vec4(0, 1, 0, 1),
-        Vec4(0, 1, 1, 1),
-        Vec4(1, 1, 1, 1)};
+    // Triangle topTop{
+    //     Vec4(0, 1, 0, 1),
+    //     Vec4(0, 1, 1, 1),
+    //     Vec4(1, 1, 1, 1)};
 
-    Triangle topBottom{
-        Vec4(0, 1, 0, 1),
-        Vec4(1, 1, 1, 1),
-        Vec4(1, 1, 0, 1)};
+    // Triangle topBottom{
+    //     Vec4(0, 1, 0, 1),
+    //     Vec4(1, 1, 1, 1),
+    //     Vec4(1, 1, 0, 1)};
 
-    Triangle bottomTop{
-        Vec4(0, 0, 0, 1),
-        Vec4(1, 0, 1, 1),
-        Vec4(0, 0, 1, 1)};
+    // Triangle bottomTop{
+    //     Vec4(0, 0, 0, 1),
+    //     Vec4(1, 0, 1, 1),
+    //     Vec4(0, 0, 1, 1)};
 
-    Triangle bottomBottom{
-        Vec4(0, 0, 0, 1),
-        Vec4(1, 0, 0, 1),
-        Vec4(1, 0, 1, 1)};
+    // Triangle bottomBottom{
+    //     Vec4(0, 0, 0, 1),
+    //     Vec4(1, 0, 0, 1),
+    //     Vec4(1, 0, 1, 1)};
 
-    std::vector<Triangle> triangles = {southTop, southBottom, northTop, northBottom, eastTop, eastBottom, westTop, westBottom, topTop, topBottom, bottomTop, bottomBottom};
+    // std::vector<Triangle> triangles = {southTop, southBottom, northTop, northBottom, eastTop, eastBottom, westTop, westBottom, topTop, topBottom, bottomTop, bottomBottom};
+    // Mesh squareMesh{triangles};
 
-    Mesh squareMesh{triangles};
+    Mesh shipMesh;
+    bool loaded = shipMesh.loadFromObjectFile("objects/spaceShip.obj");
+
+    Mesh sortedShipMesh;
+
+
+    if (!loaded) {
+        return 0;
+    }
+
+
     float angle = 45.0f * M_PI / 180.0f;
     Matrix4x4 rotationMat;
     Vec4 lightVec{0.0,0.0,-1.0,0.0};
 
-    bool printed = false;
     while (!window.shouldClose())
     {
         window.pollEvents();
 
         window.clear({20, 20, 20});
-
         angle += 0.001;
-        for (Triangle &t : squareMesh.getMesh())
+        sortedShipMesh.clearMesh();
+        for (Triangle &t : shipMesh.getMesh())
         {
+
+            t.print();
 
             float c = std::cos(angle);
             float s = std::sin(angle);
@@ -150,7 +163,6 @@ int main()
 
             Triangle transformedTriangle = rotationMat.transformTriangle(t);
             Triangle translatedTriangle = translationMat.transformTriangle(transformedTriangle);
-
             Vec4 normal = translatedTriangle.getNormal();
             Vec4 cameraToPlaneVec = translatedTriangle.getP1().subtract(camera);
 
@@ -166,11 +178,23 @@ int main()
             Vec4 p3 = projectedTriangle.getP3().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
 
             Triangle drawnTriangle{p1, p2, p3};
-
             Color triangleColor = Color::getColor(normal.dot(lightVec));
+            drawnTriangle.setColor(triangleColor);
 
-            window.drawFilledTriangle(drawnTriangle, triangleColor);
+            sortedShipMesh.addTriangle(drawnTriangle);
+
         }
+
+        sortedShipMesh.sortMesh();
+
+        for (Triangle &drawnTriangle : sortedShipMesh.getMesh()) {
+
+            drawnTriangle.print();
+            
+            window.drawFilledTriangle(drawnTriangle, drawnTriangle.getColor());
+            window.drawTriangle(drawnTriangle, {0,0,0});
+        }
+
 
         window.present();
     }

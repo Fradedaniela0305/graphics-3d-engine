@@ -6,6 +6,7 @@
 #include <cmath>
 #include "Triangle.hpp"
 #include "math/Vec4.hpp"
+#include "Color.hpp"
 
 TEST(TriangleTest, ConstructorSetsPoints)
 {
@@ -148,6 +149,77 @@ TEST(TriangleTest, GetLeftmostAndRightmostPointBreakTiesInFavorOfEarlierPoint)
 
     EXPECT_FLOAT_EQ(t.getLeftmostPoint().getY(), 1.0f);
     EXPECT_FLOAT_EQ(t.getRightmostPoint().getY(), 1.0f);
+}
+
+TEST(TriangleTest, ZthMidPointReturnsAverageOfZValues)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 9.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 12.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_FLOAT_EQ(t.zthMidPoint(), 8.0f);
+}
+
+TEST(TriangleTest, ZthMidPointHandlesNegativeAndZeroZValues)
+{
+    Vec4 p1(0.0f, 0.0f, -3.0f, 1.0f);
+    Vec4 p2(0.0f, 0.0f, 0.0f, 1.0f);
+    Vec4 p3(0.0f, 0.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_FLOAT_EQ(t.zthMidPoint(), 0.0f);
+}
+
+TEST(TriangleTest, DefaultColorIsWhite)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    EXPECT_EQ(t.getColor(), Color::White);
+}
+
+TEST(TriangleTest, SetColorChangesColor)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    t.setColor(Color::Red);
+
+    EXPECT_EQ(t.getColor(), Color::Red);
+}
+
+TEST(TriangleTest, SetColorCanBeCalledMultipleTimes)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+
+    t.setColor(Color::Red);
+    t.setColor(Color::Blue);
+
+    EXPECT_EQ(t.getColor(), Color::Blue);
+}
+
+TEST(TriangleTest, SetColorDoesNotAffectOtherTriangleProperties)
+{
+    Vec4 p1(1.0f, 2.0f, 3.0f, 1.0f);
+    Vec4 p2(3.0f, 4.0f, 3.0f, 1.0f);
+    Vec4 p3(5.0f, 6.0f, 3.0f, 1.0f);
+    Triangle t(p1, p2, p3);
+    Vec4 normalBefore = t.getNormal();
+
+    t.setColor(Color::Green);
+
+    EXPECT_FLOAT_EQ(t.getP1().getX(), 1.0f);
+    EXPECT_FLOAT_EQ(t.getNormal().getX(), normalBefore.getX());
+    EXPECT_FLOAT_EQ(t.getNormal().getY(), normalBefore.getY());
+    EXPECT_FLOAT_EQ(t.getNormal().getZ(), normalBefore.getZ());
 }
 
 TEST(TriangleTest, PrintOutputsPoints)

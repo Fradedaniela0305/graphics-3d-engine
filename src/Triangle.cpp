@@ -14,7 +14,6 @@ Triangle::Triangle(Vec4 p1, Vec4 p2, Vec4 p3)
     normal = calculateNormal();
 }
 
-
 /**
  * Constructor to create a triangle in 4-dimensional space with 3 points. Last coordinate is set to 0
  */
@@ -23,7 +22,7 @@ Triangle::Triangle(Vec4 p1, Vec4 p2, Vec4 p3, Color color, Vec4 normal)
     points.push_back(p1);
     points.push_back(p2);
     points.push_back(p3);
-    color = color; 
+    color = color;
     normal = normal;
 }
 
@@ -69,8 +68,17 @@ Vec4 Triangle::getNormal()
 /**
  * Getter for triangle's color
  */
-Color Triangle::getColor() {
+Color Triangle::getColor()
+{
     return color;
+}
+
+/**
+ * Setter for triangle's color
+ */
+void Triangle::setColor(Color color)
+{
+    this->color = color;
 }
 
 /**
@@ -157,6 +165,13 @@ Vec4 Triangle::getRightmostPoint()
         }
     }
     return rightmost;
+}
+
+/**
+ * Returns midpoint of zth value of the triangle
+ */
+float Triangle::zthMidPoint() {
+    return (points[0].getZ() + points[1].getZ() + points[2].getZ()) / 3.0f;
 }
 
 /**

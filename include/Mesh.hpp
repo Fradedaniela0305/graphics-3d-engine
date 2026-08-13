@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include "Triangle.hpp"
-#include <string> 
+#include <fstream>
+#include <sstream>
+#include <string>
 
 /**
  * Represents a mesh
@@ -35,6 +37,15 @@ public:
      */
     bool loadFromObjectFile(std::string path);
 
+    /**
+     * Sorts mesh based on triangle's zth-component. From smallest to largest.
+     */
+    void sortMesh();
+
+    /**
+     * Removes all triangles from the mesh
+     */
+    void clearMesh();
 
 private:
     std::vector<Triangle> mesh;
