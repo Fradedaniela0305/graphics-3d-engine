@@ -47,6 +47,30 @@ float Vec3::getZ()
 }
 
 /**
+ * Setter for x component
+ */
+void Vec3::setX(float x)
+{
+    components[0] = x;
+}
+
+/**
+ * Setter for y component
+ */
+void Vec3::setY(float y)
+{
+    components[1] = y;
+}
+
+/**
+ * Setter for z component
+ */
+void Vec3::setZ(float z)
+{
+    components[2] = z;
+}
+
+/**
  * Returns a new vector with the given amounts added to each component
  */
 Vec3 Vec3::shift(float xAmount, float yAmount, float zAmount)

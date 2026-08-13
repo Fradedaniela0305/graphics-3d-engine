@@ -18,6 +18,22 @@ TEST(Vec2Test, DefaultConstructorConstructs)
     (void)v;
 }
 
+TEST(Vec2Test, SetXChangesXComponentOnly)
+{
+    Vec2 v(3.0f, 4.0f);
+    v.setX(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 10.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+}
+
+TEST(Vec2Test, SetYChangesYComponentOnly)
+{
+    Vec2 v(3.0f, 4.0f);
+    v.setY(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 10.0f);
+}
+
 TEST(Vec2Test, ShiftAddsAmountToEachComponent)
 {
     Vec2 v(3.0f, 4.0f);

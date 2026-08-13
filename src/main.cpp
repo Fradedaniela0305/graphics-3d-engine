@@ -33,168 +33,117 @@ int main()
     Vec4 r3{0, 0, q, -fNear * q};
     Vec4 r4{0, 0, 1, 0};
 
-    Vec4 camera(0,0,0,0);
-
     Matrix4x4 projectionMat{r1, r2, r3, r4};
-
-    float x = 1.0f / std::sqrt(3.0f);
-    float y = 1.0f / std::sqrt(3.0f);
-    float z = 1.0f / std::sqrt(3.0f);
 
     Matrix4x4 translationMat{
         Vec4{1, 0, 0, 0},
         Vec4{0, 1, 0, 0},
-        Vec4{0, 0, 1, 8},
+        Vec4{0, 0, 1, 5},
         Vec4{0, 0, 0, 1}};
 
-    // Triangle southTop{
-    //     Vec4(0, 1, 0, 1),
-    //     Vec4(1, 1, 0, 1),
-    //     Vec4(1, 0, 0, 1)};
-
-    // Triangle southBottom{
-    //     Vec4(0, 1, 0, 1),
-    //     Vec4(1, 0, 0, 1),
-    //     Vec4(0, 0, 0, 1)};
-
-    // Triangle northTop{
-    //     Vec4(0, 1, 1, 1),
-    //     Vec4(1, 0, 1, 1),
-    //     Vec4(1, 1, 1, 1)};
-
-    // Triangle northBottom{
-    //     Vec4(0, 1, 1, 1),
-    //     Vec4(0, 0, 1, 1),
-    //     Vec4(1, 0, 1, 1)};
-
-    // Triangle eastTop{
-    //     Vec4(1, 1, 0, 1),
-    //     Vec4(1, 1, 1, 1),
-    //     Vec4(1, 0, 1, 1)};
-
-    // Triangle eastBottom{
-    //     Vec4(1, 1, 0, 1),
-    //     Vec4(1, 0, 1, 1),
-    //     Vec4(1, 0, 0, 1)};
-
-    // Triangle westTop{
-    //     Vec4(0, 1, 0, 1),
-    //     Vec4(0, 0, 1, 1),
-    //     Vec4(0, 1, 1, 1)};
-
-    // Triangle westBottom{
-    //     Vec4(0, 1, 0, 1),
-    //     Vec4(0, 0, 0, 1),
-    //     Vec4(0, 0, 1, 1)};
-
-    // Triangle topTop{
-    //     Vec4(0, 1, 0, 1),
-    //     Vec4(0, 1, 1, 1),
-    //     Vec4(1, 1, 1, 1)};
-
-    // Triangle topBottom{
-    //     Vec4(0, 1, 0, 1),
-    //     Vec4(1, 1, 1, 1),
-    //     Vec4(1, 1, 0, 1)};
-
-    // Triangle bottomTop{
-    //     Vec4(0, 0, 0, 1),
-    //     Vec4(1, 0, 1, 1),
-    //     Vec4(0, 0, 1, 1)};
-
-    // Triangle bottomBottom{
-    //     Vec4(0, 0, 0, 1),
-    //     Vec4(1, 0, 0, 1),
-    //     Vec4(1, 0, 1, 1)};
-
-    // std::vector<Triangle> triangles = {southTop, southBottom, northTop, northBottom, eastTop, eastBottom, westTop, westBottom, topTop, topBottom, bottomTop, bottomBottom};
-    // Mesh squareMesh{triangles};
-
     Mesh shipMesh;
-    bool loaded = shipMesh.loadFromObjectFile("objects/spaceShip.obj");
+    bool loaded = shipMesh.loadFromObjectFile("objects/teapot.obj");
 
     Mesh sortedShipMesh;
 
-
-    if (!loaded) {
+    if (!loaded)
+    {
         return 0;
     }
 
-
     float angle = 45.0f * M_PI / 180.0f;
     Matrix4x4 rotationMat;
-    Vec4 lightVec{0.0,0.0,-1.0,0.0};
+    Vec4 lightVec{0.0, 0.0, -1.0, 0.0};
+    Vec4 camera{0.0, 0.0, 0.0, 0.0};
 
     while (!window.shouldClose())
     {
         window.pollEvents();
 
+        if (window.isKeyDown(SDL_SCANCODE_W))
+        {
+            camera.setZ(camera.getZ()+0.1);
+        }
+        if (window.isKeyDown(SDL_SCANCODE_A))
+        {
+            camera.setX(camera.getX()-0.1);
+        }
+        if (window.isKeyDown(SDL_SCANCODE_S))
+        {
+            camera.setZ(camera.getZ()-0.1);
+        }
+        if (window.isKeyDown(SDL_SCANCODE_D))
+        {
+            camera.setX(camera.getX()+0.1);
+        }
+        if (window.isKeyDown(SDL_SCANCODE_UP))
+        {
+            camera.setY(camera.getY()+0.1);
+        }
+        if (window.isKeyDown(SDL_SCANCODE_LEFT))
+        {
+        }
+        if (window.isKeyDown(SDL_SCANCODE_RIGHT))
+        {
+        }
+        if (window.isKeyDown(SDL_SCANCODE_DOWN))
+        {
+            camera.setY(camera.getY()-0.1);
+        }
+
         window.clear({20, 20, 20});
-        angle += 0.001;
+        angle += 0.01;
         sortedShipMesh.clearMesh();
         for (Triangle &t : shipMesh.getMesh())
         {
 
-            t.print();
-
-            float c = std::cos(angle);
-            float s = std::sin(angle);
+            float c = cosf(angle);
+            float s = sinf(angle);
+            float ch = cosf(angle * 0.5f);
+            float sh = sinf(angle * 0.5f);
 
             rotationMat = Matrix4x4{
-                Vec4{
-                    c + x * x * (1 - c),
-                    y * x * (1 - c) + z * s,
-                    z * x * (1 - c) - y * s,
-                    0},
-
-                Vec4{
-                    x * y * (1 - c) - z * s,
-                    c + y * y * (1 - c),
-                    z * y * (1 - c) + x * s,
-                    0},
-
-                Vec4{
-                    x * z * (1 - c) + y * s,
-                    y * z * (1 - c) - x * s,
-                    c + z * z * (1 - c),
-                    0},
-
+                Vec4{c, s * ch, s * sh, 0},
+                Vec4{-s, c * ch, c * sh, 0},
+                Vec4{0, -sh, ch, 0},
                 Vec4{0, 0, 0, 1}};
 
             Triangle transformedTriangle = rotationMat.transformTriangle(t);
             Triangle translatedTriangle = translationMat.transformTriangle(transformedTriangle);
-            Vec4 normal = translatedTriangle.getNormal();
-            Vec4 cameraToPlaneVec = translatedTriangle.getP1().subtract(camera);
+
+            Triangle viewedTriangle{translatedTriangle.getP1().subtract(camera),
+                                    translatedTriangle.getP2().subtract(camera),
+                                    translatedTriangle.getP3().subtract(camera)};
+
+            Vec4 normal = viewedTriangle.getNormal();
+            Vec4 cameraToPlaneVec = viewedTriangle.getP1().subtract(camera);
 
             if (normal.dot(cameraToPlaneVec) > 0)
             {
                 continue;
             }
 
-            Triangle projectedTriangle = projectionMat.transformTriangle(translatedTriangle);
+            Triangle projectedTriangle = projectionMat.transformTriangle(viewedTriangle);
 
             Vec4 p1 = projectedTriangle.getP1().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
             Vec4 p2 = projectedTriangle.getP2().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
             Vec4 p3 = projectedTriangle.getP3().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
 
             Triangle drawnTriangle{p1, p2, p3};
-            Color triangleColor = Color::getColor(normal.dot(lightVec));
+            Color triangleColor = Color::getColor(normal.dot(camera));
             drawnTriangle.setColor(triangleColor);
 
             sortedShipMesh.addTriangle(drawnTriangle);
-
         }
 
         sortedShipMesh.sortMesh();
 
-        for (Triangle &drawnTriangle : sortedShipMesh.getMesh()) {
+        for (Triangle &drawnTriangle : sortedShipMesh.getMesh())
+        {
 
-            drawnTriangle.print();
-            
             window.drawFilledTriangle(drawnTriangle, drawnTriangle.getColor());
-            window.drawTriangle(drawnTriangle, {0,0,0});
+            // window.drawTriangle(drawnTriangle, {0, 0, 0});
         }
-
 
         window.present();
     }

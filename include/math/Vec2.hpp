@@ -30,6 +30,18 @@ public:
     float getY();
 
     /**
+     * Setter for x component
+     * @param x - value to set the x component to
+     */
+    void setX(float x);
+
+    /**
+     * Setter for y component
+     * @param y - value to set the y component to
+     */
+    void setY(float y);
+
+    /**
      * Returns a new vector with the given amounts added to each component
      * @param xAmount - value to add to the x component
      * @param yAmount - value to add to the y component

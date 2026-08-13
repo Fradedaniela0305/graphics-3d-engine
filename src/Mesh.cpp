@@ -31,6 +31,16 @@ std::vector<Triangle> Mesh::getMesh()
 }
 
 /**
+ * Extracts the vertex index from an OBJ face token.
+ * Handles "v", "v/vt", "v/vt/vn" and "v//vn" forms, returning just the
+ * leading vertex index (the part before the first '/', if any).
+ */
+static int parseFaceVertexIndex(const std::string &token)
+{
+    return std::stoi(token.substr(0, token.find('/')));
+}
+
+/**
  * Loader for .obj files
  */
 bool Mesh::loadFromObjectFile(std::string path)
@@ -61,8 +71,12 @@ bool Mesh::loadFromObjectFile(std::string path)
 
         else if (type == "f")
         {
-            int v1, v2, v3;
-            ss >> v1 >> v2 >> v3;
+            std::string t1, t2, t3;
+            ss >> t1 >> t2 >> t3;
+
+            int v1 = parseFaceVertexIndex(t1);
+            int v2 = parseFaceVertexIndex(t2);
+            int v3 = parseFaceVertexIndex(t3);
 
             mesh.push_back(Triangle{vertex.at(v1 - 1), vertex.at(v2 - 1), vertex.at(v3 - 1)});
         }

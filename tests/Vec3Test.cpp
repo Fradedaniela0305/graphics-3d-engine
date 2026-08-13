@@ -19,6 +19,33 @@ TEST(Vec3Test, DefaultConstructorConstructs)
     (void)v;
 }
 
+TEST(Vec3Test, SetXChangesXComponentOnly)
+{
+    Vec3 v(3.0f, 4.0f, 5.0f);
+    v.setX(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 10.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
+}
+
+TEST(Vec3Test, SetYChangesYComponentOnly)
+{
+    Vec3 v(3.0f, 4.0f, 5.0f);
+    v.setY(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 10.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
+}
+
+TEST(Vec3Test, SetZChangesZComponentOnly)
+{
+    Vec3 v(3.0f, 4.0f, 5.0f);
+    v.setZ(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 10.0f);
+}
+
 TEST(Vec3Test, ShiftAddsAmountToEachComponent)
 {
     Vec3 v(3.0f, 4.0f, 5.0f);

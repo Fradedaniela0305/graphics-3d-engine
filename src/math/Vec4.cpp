@@ -58,6 +58,38 @@ float Vec4::getW()
 }
 
 /**
+ * Setter for x component
+ */
+void Vec4::setX(float x)
+{
+    components[0] = x;
+}
+
+/**
+ * Setter for y component
+ */
+void Vec4::setY(float y)
+{
+    components[1] = y;
+}
+
+/**
+ * Setter for z component
+ */
+void Vec4::setZ(float z)
+{
+    components[2] = z;
+}
+
+/**
+ * Setter for w component
+ */
+void Vec4::setW(float w)
+{
+    components[3] = w;
+}
+
+/**
  * Returns a new vector with the given amounts added to each component
  */
 Vec4 Vec4::shift(float xAmount, float yAmount, float zAmount, float wAmount)

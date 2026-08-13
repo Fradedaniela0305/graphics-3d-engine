@@ -37,6 +37,22 @@ float Vec2::getY()
 }
 
 /**
+ * Setter for x component
+ */
+void Vec2::setX(float x)
+{
+    components[0] = x;
+}
+
+/**
+ * Setter for y component
+ */
+void Vec2::setY(float y)
+{
+    components[1] = y;
+}
+
+/**
  * Returns a new vector with the given amounts added to each component
  */
 Vec2 Vec2::shift(float xAmount, float yAmount)

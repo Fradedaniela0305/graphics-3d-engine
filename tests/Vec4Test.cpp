@@ -20,6 +20,46 @@ TEST(Vec4Test, DefaultConstructorConstructs)
     (void)v;
 }
 
+TEST(Vec4Test, SetXChangesXComponentOnly)
+{
+    Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
+    v.setX(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 10.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
+    EXPECT_FLOAT_EQ(v.getW(), 6.0f);
+}
+
+TEST(Vec4Test, SetYChangesYComponentOnly)
+{
+    Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
+    v.setY(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 10.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
+    EXPECT_FLOAT_EQ(v.getW(), 6.0f);
+}
+
+TEST(Vec4Test, SetZChangesZComponentOnly)
+{
+    Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
+    v.setZ(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 10.0f);
+    EXPECT_FLOAT_EQ(v.getW(), 6.0f);
+}
+
+TEST(Vec4Test, SetWChangesWComponentOnly)
+{
+    Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
+    v.setW(10.0f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
+    EXPECT_FLOAT_EQ(v.getW(), 10.0f);
+}
+
 TEST(Vec4Test, ShiftAddsAmountToEachComponent)
 {
     Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);

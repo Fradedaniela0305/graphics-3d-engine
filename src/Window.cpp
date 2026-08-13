@@ -136,7 +136,6 @@ void Window::drawCircle(int centerX, int centerY, int radius, Color color, bool 
 {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
-    // Midpoint circle algorithm, one octant reflected into eight.
     int x = radius;
     int y = 0;
     int err = 0;
