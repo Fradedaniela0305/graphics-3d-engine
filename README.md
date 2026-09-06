@@ -3,7 +3,7 @@
 A software 3D graphics engine built from scratch in C++ to develop a low-level understanding of how 3D rendering actually works. Vertices are transformed, projected, and rasterized by hand. SDL2 is used only to open a window and set pixels/lines on screen.
 
 
-## Preview
+## Utah Teapot
 
 https://github.com/user-attachments/assets/edb9cf97-86b5-4140-b3ee-15ddb8a276f3
 
