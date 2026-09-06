@@ -2,6 +2,11 @@
 
 A software 3D graphics engine built from scratch in C++ to develop a low-level understanding of how 3D rendering actually works. Vertices are transformed, projected, and rasterized by hand. SDL2 is used only to open a window and set pixels/lines on screen.
 
+
+## Preview
+
+https://github.com/user-attachments/assets/edb9cf97-86b5-4140-b3ee-15ddb8a276f3
+
 ## Tech stack
 
 - **Language:** C++17
@@ -78,7 +83,7 @@ A minimal Wavefront `.obj` parser reads:
 - `v x y z` lines into vertex positions, stored as `Vec4(x, y, z, 1)`
 - `f a b c` lines, which reference three vertices (1-indexed) and become a `Triangle`
 
-Every point in the engine is a `Vec4` — a **homogeneous coordinate** `(x, y, z, w)` — rather than a plain 3-vector. This allows translation, rotation, and perspective projection all be expressed as a single 4×4 matrix multiplication:
+Every point in the engine is a `Vec4`,  a **homogeneous coordinate** `(x, y, z, w)`. This allows translation, rotation, and perspective projection all be expressed as a single 4×4 matrix multiplication:
 
 - **Points** (positions) use `w = 1`
 - **Directions** (like normals) use `w = 0`, so translations don't affect them
@@ -188,13 +193,13 @@ $$
 
 Applying `P` to a camera-space point `(x, y, z, 1)` gives:
 
-- `x' = f/aspect · x`, `y' = f · y` — scales by field of view and corrects for the window's aspect ratio
-- `z' = q·z − near·q` — remaps depth into the `[0, 1]` range used later for depth sorting
-- `w' = z` — critically, the **output w becomes the input's camera-space depth**. This is what makes perspective (rather than orthographic) projection work.
+- `x' = f/aspect · x`, `y' = f · y` —> scales by field of view and corrects for the window's aspect ratio
+- `z' = q·z − near·q` —> remaps depth into the `[0, 1]` range used later for depth sorting
+- `w' = z`-> the **output w becomes the input's camera-space depth**. 
 
 ### 7. Perspective divide
 
-Dividing every component by `w` (`Vec4::perspectiveDivide`) turns clip space into **normalized device coordinates**. Since `w = z_camera`, this division is what makes distant geometry shrink toward the center of the screen — the defining property of perspective:
+Dividing every component by `w` (`Vec4::perspectiveDivide`) turns clip space into **normalized device coordinates**. Since `w = z_camera`, this division is what makes distant geometry shrink toward the center of the screen:
 
 $$
 (x, y, z, w) \rightarrow \left(\frac{x}{w}, \frac{y}{w}, \frac{z}{w}, 1\right)
@@ -217,16 +222,16 @@ $$
 z_{\text{mid}} = \frac{z_1 + z_2 + z_3}{3}
 $$
 
-This is the **painter's algorithm**: like a painter working back-to-front, triangles farther from the camera are drawn first so nearer triangles naturally overwrite them. 
+This is the **painter's algorithm**: triangles farther from the camera are drawn first so nearer triangles naturally overwrite them. 
 
 ### 10. Shading
 
-Currently a simple grayscale shade is derived per-triangle from `dot(normal, camera)` (`Color::getColor`), giving faces facing the camera a brighter value than faces at a grazing angle — a first step toward real lighting. 
+Currently a simple grayscale shade is derived per-triangle from `dot(normal, camera)` (`Color::getColor`), giving faces facing the camera a brighter value than faces at a grazing angle
 
 ### 11. Rasterization
 
 Two rasterizers exist in `Window`:
-- `drawTriangle` — draws the triangle's three edges as lines (wireframe). This is what the demo currently uses.
+- `drawTriangle` — draws the triangle's three edges as lines (wireframe).
 - `drawFilledTriangle` — fills the triangle using SDL's `SDL_RenderGeometry`, ready to swap in once shading is more developed.
 
 ## What's implemented so far
