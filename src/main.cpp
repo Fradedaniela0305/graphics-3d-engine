@@ -28,6 +28,10 @@ int main()
     float f = 1.0f / std::tan(fViewRad / 2.0f);
     float q = fFar / (fFar - fNear);
 
+    Vec4 worldUp{0,1,0,0};
+    Vec4 worldRight{1,0,0,0};
+    Vec4 worldForward{0,0,1,0};
+
     Vec4 r1{(float)f / aspectRatio, 0, 0, 0};
     Vec4 r2{0, f, 0, 0};
     Vec4 r3{0, 0, q, -fNear * q};
@@ -38,11 +42,11 @@ int main()
     Matrix4x4 translationMat{
         Vec4{1, 0, 0, 0},
         Vec4{0, 1, 0, 0},
-        Vec4{0, 0, 1, 5},
+        Vec4{0, 0, 1, -4},
         Vec4{0, 0, 0, 1}};
 
     Mesh shipMesh;
-    bool loaded = shipMesh.loadFromObjectFile("objects/teapot.obj");
+    bool loaded = shipMesh.loadFromObjectFile("objects/cube.obj");
 
     Mesh sortedShipMesh;
 
@@ -54,7 +58,9 @@ int main()
     float angle = 45.0f * M_PI / 180.0f;
     Matrix4x4 rotationMat;
     Vec4 lightVec{0.0, 0.0, -1.0, 0.0};
-    Vec4 camera{0.0, 0.0, 0.0, 0.0};
+
+    
+    Vec4 camera{0.0, 0.0, -1.0, 0.0};
 
     while (!window.shouldClose())
     {
@@ -62,23 +68,23 @@ int main()
 
         if (window.isKeyDown(SDL_SCANCODE_W))
         {
-            camera.setZ(camera.getZ()+0.1);
+            camera.setZ(camera.getZ()+0.01);
         }
         if (window.isKeyDown(SDL_SCANCODE_A))
         {
-            camera.setX(camera.getX()-0.1);
+            camera.setX(camera.getX()-0.01);
         }
         if (window.isKeyDown(SDL_SCANCODE_S))
         {
-            camera.setZ(camera.getZ()-0.1);
+            camera.setZ(camera.getZ()-0.01);
         }
         if (window.isKeyDown(SDL_SCANCODE_D))
         {
-            camera.setX(camera.getX()+0.1);
+            camera.setX(camera.getX()+0.01);
         }
         if (window.isKeyDown(SDL_SCANCODE_UP))
         {
-            camera.setY(camera.getY()+0.1);
+            camera.setY(camera.getY()-0.01);
         }
         if (window.isKeyDown(SDL_SCANCODE_LEFT))
         {
@@ -88,11 +94,11 @@ int main()
         }
         if (window.isKeyDown(SDL_SCANCODE_DOWN))
         {
-            camera.setY(camera.getY()-0.1);
+            camera.setY(camera.getY()+0.01);
         }
 
         window.clear({20, 20, 20});
-        angle += 0.01;
+        angle += 0.0001;
         sortedShipMesh.clearMesh();
         for (Triangle &t : shipMesh.getMesh())
         {
@@ -118,7 +124,7 @@ int main()
             Vec4 normal = viewedTriangle.getNormal();
             Vec4 cameraToPlaneVec = viewedTriangle.getP1().subtract(camera);
 
-            if (normal.dot(cameraToPlaneVec) > 0)
+            if (normal.dot(cameraToPlaneVec))
             {
                 continue;
             }
@@ -141,8 +147,10 @@ int main()
         for (Triangle &drawnTriangle : sortedShipMesh.getMesh())
         {
 
-            window.drawFilledTriangle(drawnTriangle, drawnTriangle.getColor());
-            // window.drawTriangle(drawnTriangle, {0, 0, 0});
+            
+
+            // window.drawFilledTriangle(drawnTriangle, drawnTriangle.getColor());
+            window.drawTriangle(drawnTriangle, {255, 255, 255});
         }
 
         window.present();
