@@ -58,6 +58,14 @@ Vec4 Triangle::getP3()
 }
 
 /**
+ * Getter for all points
+ */
+std::vector<Vec4> Triangle::getPoints()
+{
+    return points;
+}
+
+/**
  * Getter for the triangle's normal vector
  */
 Vec4 Triangle::getNormal()
@@ -165,6 +173,16 @@ Vec4 Triangle::getRightmostPoint()
         }
     }
     return rightmost;
+}
+
+/**
+* Returns true if one of the triangles edges crosses between a certain point.
+ */
+bool Triangle::isBehindNearPlane(float nearPlane)
+{
+    return points[0].getZ() < nearPlane ||
+           points[1].getZ() < nearPlane ||
+           points[2].getZ() < nearPlane;
 }
 
 /**

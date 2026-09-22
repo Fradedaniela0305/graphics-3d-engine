@@ -56,8 +56,10 @@ int main()
 
     Mesh shipMesh;
     bool loaded = shipMesh.loadFromObjectFile("objects/teapot.obj");
-
     Mesh sortedShipMesh;
+    Mesh clippedTrianglesMesh;
+
+    Vec4 normal;
 
     if (!loaded)
     {
@@ -95,11 +97,11 @@ int main()
         }
         if (window.isKeyDown(SDL_SCANCODE_LEFT))
         {
-            yawAngle += 0.01f;
+            yawAngle -= 0.1f;
         }
         if (window.isKeyDown(SDL_SCANCODE_RIGHT))
         {
-            yawAngle -= 0.1f;
+            yawAngle += 0.1f;
         }
         if (window.isKeyDown(SDL_SCANCODE_DOWN))
         {
@@ -116,6 +118,7 @@ int main()
         window.clear({20, 20, 20});
         angle += 0.01;
         sortedShipMesh.clearMesh();
+        clippedTrianglesMesh.clearMesh();
         for (Triangle &t : shipMesh.getMesh())
         {
 
@@ -140,7 +143,7 @@ int main()
             Matrix4x4 cameraRotationMatrix{cameraRight, cameraUp, cameraForward, Vec4{0, 0, 0, 1}};
             Triangle cameraViewTriangle = cameraRotationMatrix.transformTriangle(viewedTriangle);
 
-            Vec4 normal = cameraViewTriangle.getNormal();
+            normal = cameraViewTriangle.getNormal();
             Vec4 cameraToPlaneVec = cameraViewTriangle.getP1();
 
             if (normal.dot(cameraToPlaneVec) >= 0.0f)
@@ -148,7 +151,105 @@ int main()
                 continue;
             }
 
-            Triangle projectedTriangle = projectionMat.transformTriangle(cameraViewTriangle);
+            if (cameraViewTriangle.isBehindNearPlane(fNear))
+            {
+
+                std::vector<Vec4> inside;
+                std::vector<Vec4> outside;
+
+                for (Vec4 vec : cameraViewTriangle.getPoints())
+                {
+
+                    if (vec.getZ() >= fNear)
+                    {
+                        inside.push_back(vec);
+                    }
+                    else
+                    {
+                        outside.push_back(vec);
+                    }
+                }
+
+                if (inside.size() == 1)
+                {
+
+                    Vec4 A = inside[0];
+
+                    Vec4 B = outside[0];
+                    Vec4 C = outside[1];
+
+                    Vec4 directionAB = B.subtract(A);
+                    Vec4 directionAC = C.subtract(A);
+
+                    float tAB =
+                        (fNear - A.getZ()) /
+                        directionAB.getZ();
+
+                    float tAC =
+                        (fNear - A.getZ()) /
+                        directionAC.getZ();
+
+                    Vec4 intersectionAB = Vec4{A.getX() + (directionAB.getX()) * tAB,
+                                               A.getY() + (directionAB.getY()) * tAB,
+                                               A.getZ() + (directionAB.getZ()) * tAB,
+                                               1};
+
+                    Vec4 intersectionAC = Vec4{A.getX() + (directionAC.getX()) * tAC,
+                                               A.getY() + (directionAC.getY()) * tAC,
+                                               A.getZ() + (directionAC.getZ()) * tAC,
+                                               1};
+
+                    Triangle newTriangle = Triangle(A, intersectionAB, intersectionAC);
+                    clippedTrianglesMesh.addTriangle(newTriangle);
+                }
+                else if (inside.size() == 2)
+                {
+                    Vec4 A = inside[0];
+                    Vec4 B = inside[1];
+
+                    Vec4 C = outside[0];
+
+                    Vec4 directionAC = C.subtract(A);
+                    Vec4 directionBC = C.subtract(B);
+
+                    float tAC =
+                        (fNear - A.getZ()) /
+                        directionAC.getZ();
+
+                    float tBC =
+                        (fNear - B.getZ()) /
+                        directionBC.getZ();
+
+                    Vec4 intersectionAC = Vec4{A.getX() + (directionAC.getX()) * tAC,
+                                               A.getY() + (directionAC.getY()) * tAC,
+                                               A.getZ() + (directionAC.getZ()) * tAC,
+                                               1};
+
+                    Vec4 intersectionBC = Vec4{B.getX() + (directionBC.getX()) * tBC,
+                                               B.getY() + (directionBC.getY()) * tBC,
+                                               B.getZ() + (directionBC.getZ()) * tBC,
+                                               1};
+
+                    Triangle newTriangleLeft = Triangle(A, intersectionBC, intersectionAC);
+                    Triangle newTriangleRight = Triangle(A, B, intersectionBC);
+                    clippedTrianglesMesh.addTriangle(newTriangleLeft);
+                    clippedTrianglesMesh.addTriangle(newTriangleRight);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+
+                clippedTrianglesMesh.addTriangle(cameraViewTriangle);
+            }
+        }
+
+        for (Triangle &t : clippedTrianglesMesh.getMesh()) {
+
+            Triangle projectedTriangle = projectionMat.transformTriangle(t);
 
             Vec4 p1 = projectedTriangle.getP1().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
             Vec4 p2 = projectedTriangle.getP2().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
@@ -156,7 +257,8 @@ int main()
 
             Triangle drawnTriangle{p1, p2, p3};
             Color triangleColor = Color::getColor(std::clamp(normal.dot(lightVec), 0.0f, 1.0f));
-            drawnTriangle.setColor(triangleColor);
+
+            drawnTriangle.setColor(Color(255,255,255)); // TODO
 
             sortedShipMesh.addTriangle(drawnTriangle);
         }
@@ -167,7 +269,7 @@ int main()
         {
 
             window.drawFilledTriangle(drawnTriangle, drawnTriangle.getColor());
-            // window.drawTriangle(drawnTriangle, {255, 255, 255});
+            window.drawTriangle(drawnTriangle, {0, 0, 0});
         }
 
         window.present();

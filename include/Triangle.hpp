@@ -43,12 +43,18 @@ public:
     Vec4 getP3();
 
     /**
+     * Getter for all points
+     */
+    std::vector<Vec4> getPoints();
+
+    /**
      * Getter for triangle's color
      */
     Color getColor();
 
     /**
      * Setter for triangle's color
+     * @param color - set the triangle to that color
      */
     void setColor(Color color);
 
@@ -80,6 +86,12 @@ public:
      * If multiple points share the largest x value, the first such point (in P1, P2, P3 order) is returned.
      */
     Vec4 getRightmostPoint();
+
+    /**
+     * Returns true if one of the triangles edges crosses between a certain point.
+     * @param nearPlane - the point to cross
+     */
+    bool isBehindNearPlane(float nearPlane);
 
     /**
      * Prints the triangle's points to standard output
