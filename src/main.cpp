@@ -55,11 +55,10 @@ int main()
         Vec4{0, 0, 0, 1}};
 
     Mesh shipMesh;
-    bool loaded = shipMesh.loadFromObjectFile("objects/teapot.obj");
+    bool loaded = shipMesh.loadFromObjectFile("objects/mountains.obj");
     Mesh sortedShipMesh;
     Mesh clippedTrianglesMesh;
 
-    Vec4 normal;
 
     if (!loaded)
     {
@@ -70,6 +69,7 @@ int main()
     float angle = 45.0f * M_PI / 180.0f;
     Matrix4x4 rotationMat;
     Vec4 lightVec{0.0, 0.0, -1.0, 0.0};
+    float factor = 1;
 
     while (!window.shouldClose())
     {
@@ -77,35 +77,35 @@ int main()
 
         if (window.isKeyDown(SDL_SCANCODE_W))
         {
-            camera.setZ(camera.getZ() + 0.1);
+            camera = camera.add(cameraForward.scale(1*factor));
         }
         if (window.isKeyDown(SDL_SCANCODE_A))
         {
-            camera.setX(camera.getX() - 0.1);
+            camera = camera.add(cameraRight.scale(-1*factor));
         }
         if (window.isKeyDown(SDL_SCANCODE_S))
         {
-            camera.setZ(camera.getZ() - 0.1);
+            camera = camera.add(cameraForward.scale(1*factor));
         }
         if (window.isKeyDown(SDL_SCANCODE_D))
         {
-            camera.setX(camera.getX() + 0.1);
+            camera = camera.add(cameraRight.scale(1*factor));
         }
         if (window.isKeyDown(SDL_SCANCODE_UP))
         {
-            camera.setY(camera.getY() - 0.1);
+            camera = camera.add(cameraUp.scale(1*factor));
         }
         if (window.isKeyDown(SDL_SCANCODE_LEFT))
         {
-            yawAngle -= 0.1f;
+            yawAngle -= .1*factor;
         }
         if (window.isKeyDown(SDL_SCANCODE_RIGHT))
         {
-            yawAngle += 0.1f;
+            yawAngle += .1*factor;
         }
         if (window.isKeyDown(SDL_SCANCODE_DOWN))
         {
-            camera.setY(camera.getY() + 0.1);
+            camera = camera.add(cameraUp.scale(-1*factor));
         }
 
         cameraForward.setX(sinf(yawAngle));
@@ -133,8 +133,8 @@ int main()
                 Vec4{0, -sh, ch, 0},
                 Vec4{0, 0, 0, 1}};
 
-            Triangle transformedTriangle = rotationMat.transformTriangle(t);
-            Triangle translatedTriangle = translationMat.transformTriangle(transformedTriangle);
+            // Triangle transformedTriangle = rotationMat.transformTriangle(t);
+            Triangle translatedTriangle = translationMat.transformTriangle(t);
 
             Triangle viewedTriangle{translatedTriangle.getP1().subtract(camera),
                                     translatedTriangle.getP2().subtract(camera),
@@ -143,7 +143,7 @@ int main()
             Matrix4x4 cameraRotationMatrix{cameraRight, cameraUp, cameraForward, Vec4{0, 0, 0, 1}};
             Triangle cameraViewTriangle = cameraRotationMatrix.transformTriangle(viewedTriangle);
 
-            normal = cameraViewTriangle.getNormal();
+            Vec4 normal = cameraViewTriangle.getNormal();
             Vec4 cameraToPlaneVec = cameraViewTriangle.getP1();
 
             if (normal.dot(cameraToPlaneVec) >= 0.0f)
@@ -251,15 +251,14 @@ int main()
 
             Triangle projectedTriangle = projectionMat.transformTriangle(t);
 
-            Vec4 p1 = projectedTriangle.getP1().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
-            Vec4 p2 = projectedTriangle.getP2().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
-            Vec4 p3 = projectedTriangle.getP3().perspectiveDivide().shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
+            Vec4 p1 = projectedTriangle.getP1().perspectiveDivide().scale(1, -1, 1, 1).shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
+            Vec4 p2 = projectedTriangle.getP2().perspectiveDivide().scale(1, -1, 1, 1).shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
+            Vec4 p3 = projectedTriangle.getP3().perspectiveDivide().scale(1, -1, 1, 1).shift(1.0f, 1.0f, 0, 0).scale(0.5f * width, 0.5f * height, 1, 1);
 
             Triangle drawnTriangle{p1, p2, p3};
-            Color triangleColor = Color::getColor(std::clamp(normal.dot(lightVec), 0.0f, 1.0f));
+            Color triangleColor = Color::getColor(std::clamp(t.getNormal().dot(lightVec), 0.0f, 1.0f));
 
-            drawnTriangle.setColor(Color(255,255,255)); // TODO
-
+            drawnTriangle.setColor(triangleColor); 
             sortedShipMesh.addTriangle(drawnTriangle);
         }
 
@@ -269,7 +268,7 @@ int main()
         {
 
             window.drawFilledTriangle(drawnTriangle, drawnTriangle.getColor());
-            window.drawTriangle(drawnTriangle, {0, 0, 0});
+            // window.drawTriangle(drawnTriangle, {0, 0, 0});
         }
 
         window.present();

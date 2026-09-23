@@ -114,6 +114,14 @@ Vec4 Vec4::scale(float xFactor, float yFactor, float zFactor, float wFactor)
 }
 
 /**
+ * Returns a new vector representing this vector plus the given vector
+ */
+Vec4 Vec4::add(Vec4 other)
+{
+    return Vec4(components[0] + other.getX(), components[1] + other.getY(), components[2] + other.getZ(), components[3] + other.getW());
+}
+
+/**
  * Returns a new vector representing this vector minus the given vector
  */
 Vec4 Vec4::subtract(Vec4 other)
