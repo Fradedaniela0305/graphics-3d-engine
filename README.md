@@ -7,6 +7,11 @@ A software 3D graphics engine built from scratch in C++ to develop a low-level u
 
 https://github.com/user-attachments/assets/edb9cf97-86b5-4140-b3ee-15ddb8a276f3
 
+## Camera movement
+
+https://github.com/user-attachments/assets/537bcb71-dac6-4970-b5f1-44d2b6c87e98
+
+
 ## Tech stack
 
 - **Language:** C++17
