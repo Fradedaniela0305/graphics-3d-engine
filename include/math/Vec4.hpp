@@ -92,6 +92,12 @@ public:
     Vec4 scale(float xFactor, float yFactor, float zFactor, float wFactor);
 
     /**
+     * Returns a new vector representing this vector plus the given vector
+     * @param other - vector to add to this vector
+     */
+    Vec4 add(Vec4 other);
+
+    /**
      * Returns a new vector representing this vector minus the given vector
      * @param other - vector to subtract from this vector
      */

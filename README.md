@@ -32,9 +32,10 @@ make clean    # removes the build directory
 
 | Key | Effect |
 |---|---|
-| `W` / `S` | Move camera forward / backward (Z) |
-| `A` / `D` | Move camera left / right (X) |
-| `Up` / `Down` | Move camera up / down (Y) |
+| `W` / `S` | Move camera forward / backward |
+| `A` / `D` | Move camera left / right (strafe) |
+| `Up` / `Down` | Move camera up / down |
+| `Left` / `Right` | Yaw the camera (look left / right) |
 
 ## Project structure
 
@@ -66,6 +67,7 @@ World space (after rotation + translation)
    ▼
 Camera/view space
    │  back-face cull using the face normal
+   │  clip against the near plane
    │  projection matrix
    ▼
 Clip space (x, y, z, w)
@@ -152,7 +154,25 @@ Because points carry `w = 1`, the last column of the matrix adds `(t_x, t_y, t_z
 
 ### 4. Camera / view space
 
-The camera's position is tracked as a `Vec4` and moved by WASD/arrow input. Each triangle's world-space points are shifted into camera-relative space by simple vector subtraction, `p_view = p_world - camera`.
+The camera's position is tracked as a `Vec4` and moved by WASD/arrow input. Each triangle's world-space points are first shifted into camera-relative space by simple vector subtraction, `p_view = p_world - camera`.
+
+The camera also has an orientation, built each frame from a yaw angle controlled by the left/right arrow keys:
+
+- `cameraForward` is derived directly from `yawAngle`: `(sin(yaw), 0, cos(yaw))`
+- `cameraRight = worldUp × cameraForward`
+- `cameraUp = cameraForward × cameraRight`
+
+These three vectors form a rotation basis. Packing them as the rows of a matrix and multiplying it by `p_view` rotates points into the camera's local axes, so that "forward" always corresponds to `+Z` regardless of which way the camera is currently looking:
+
+$$
+R_{\text{camera}} =
+\begin{bmatrix}
+\text{right}_x & \text{right}_y & \text{right}_z & 0 \\
+\text{up}_x & \text{up}_y & \text{up}_z & 0 \\
+\text{forward}_x & \text{forward}_y & \text{forward}_z & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
 
 ### 5. Back-face culling
 
@@ -177,7 +197,23 @@ $$
 - If the angle is less than 90° (dot product positive), the face points toward the camera → visible.
 - If the angle is 90° or more (dot product ≤ 0), the face points away, thus it can be skipped, since we'd otherwise be looking at the inside of the mesh.
 
-### 6. Projection (view to clip space)
+### 6. Near-plane clipping
+
+Perspective divide breaks down for points behind (or exactly at) the camera, since dividing by a negative or zero `w` sends them to nonsensical or infinite screen coordinates. Before projecting, each surviving triangle is tested against the near plane (`Triangle::isBehindNearPlane`) and, if it straddles it, clipped so that everything passed downstream has `z ≥ near`:
+
+- **All 3 points behind the near plane** → the triangle is discarded entirely.
+- **1 point inside, 2 outside** → the two edges leaving the inside point are intersected with the near plane, producing one smaller triangle.
+- **2 points inside, 1 outside** → the two edges crossing the near plane are intersected with it, producing a quad (re-triangulated as two triangles) that covers the surviving inside region.
+
+Each intersection point is found by walking the edge from the inside point `A` toward the outside point `B` and solving for the parameter `t` at which `z` reaches `near`:
+
+$$
+t = \frac{\text{near} - A_z}{B_z - A_z}, \qquad \text{intersection} = A + t \cdot (B - A)
+$$
+
+> **Known issue:** this stage was added recently and still has a couple of open bugs in the 1-inside / 2-inside triangulation — visible as occasional flicker or incorrect winding on geometry crossing the near plane.
+
+### 7. Projection (view to clip space)
 
 A **perspective projection matrix** converts camera-space coordinates into clip space, so that farther-away objects appear smaller. It's built from the field of view and the near/far clip planes:
 
@@ -201,7 +237,7 @@ Applying `P` to a camera-space point `(x, y, z, 1)` gives:
 - `z' = q·z − near·q` —> remaps depth into the `[0, 1]` range used later for depth sorting
 - `w' = z`-> the **output w becomes the input's camera-space depth**. 
 
-### 7. Perspective divide
+### 8. Perspective divide
 
 Dividing every component by `w` (`Vec4::perspectiveDivide`) turns clip space into **normalized device coordinates**. Since `w = z_camera`, this division is what makes distant geometry shrink toward the center of the screen:
 
@@ -209,7 +245,7 @@ $$
 (x, y, z, w) \rightarrow \left(\frac{x}{w}, \frac{y}{w}, \frac{z}{w}, 1\right)
 $$
 
-### 8. Viewport transform
+### 9. Viewport transform
 
 NDC coordinates are roughly in `[-1, 1]`. To draw them, they're shifted into `[0, 2]` and scaled by half the screen dimensions to land in pixel space:
 
@@ -218,7 +254,7 @@ screen_x = (ndc_x + 1) * 0.5 * width
 screen_y = (ndc_y + 1) * 0.5 * height
 ```
 
-### 9. Depth sorting — the painter's algorithm
+### 10. Depth sorting — the painter's algorithm
 
 Before rasterizing, `Mesh::sortMesh` sorts all triangles back-to-front by the average (midpoint) of their Z coordinates, and they're drawn in that order:
 
@@ -228,34 +264,38 @@ $$
 
 This is the **painter's algorithm**: triangles farther from the camera are drawn first so nearer triangles naturally overwrite them. 
 
-### 10. Shading
+### 11. Shading
 
 Currently a simple grayscale shade is derived per-triangle from `dot(normal, camera)` (`Color::getColor`), giving faces facing the camera a brighter value than faces at a grazing angle
 
-### 11. Rasterization
+### 12. Rasterization
 
 Two rasterizers exist in `Window`:
+- `drawFilledTriangle` — fills the triangle using SDL's `SDL_RenderGeometry`, shaded per-triangle. This is what the demo currently uses.
 - `drawTriangle` — draws the triangle's three edges as lines (wireframe).
-- `drawFilledTriangle` — fills the triangle using SDL's `SDL_RenderGeometry`, ready to swap in once shading is more developed.
+
 
 ## What's implemented so far
 
 - `.obj` mesh loading
 - Homogeneous-coordinate vector/matrix math (`Vec4`, `Matrix4x4`)
 - Model rotation, world translation, camera-relative view transform
+- Camera movement (WASD + up/down) and yaw look-around (left/right arrows) via a rotating camera basis
+- Back-face culling
+- Near-plane clipping (1-in/2-out and 2-in/1-out cases), though currently with 2 known bugs
 - Perspective projection + perspective divide + viewport mapping
 - Normal vector calculation per triangle
 - Painter's-algorithm depth sorting
-- Basic camera translation via keyboard input
-- Wireframe rendering, with filled-triangle rasterization implemented but not yet wired in
+- Basic per-triangle grayscale shading
+- Filled-triangle rasterization (currently used by the demo); wireframe rasterizer also available
 
 ## What's being worked on
 
-- Back-face culling 
-- Lighting 
-- Camera rotation (look-around), arrow-key handlers exist but are empty
-- Z-buffering 
-- Clipping against the near/far/side planes
+- Fixing the 2 known bugs in near-plane clipping
+- Camera pitch (looking up/down)
+- Proper lighting model
+- Z-buffering
+- Clipping against the far/side planes
 
 ## Testing
 

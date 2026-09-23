@@ -102,6 +102,21 @@ TEST(Vec4Test, ScaleComponentsMultipliesEachComponentByOwnFactor)
     EXPECT_FLOAT_EQ(v.getW(), 6.0f);
 }
 
+TEST(Vec4Test, AddAddsEachComponent)
+{
+    Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
+    Vec4 other(1.0f, 5.0f, 2.0f, 0.5f);
+    Vec4 result = v.add(other);
+    EXPECT_FLOAT_EQ(result.getX(), 4.0f);
+    EXPECT_FLOAT_EQ(result.getY(), 9.0f);
+    EXPECT_FLOAT_EQ(result.getZ(), 7.0f);
+    EXPECT_FLOAT_EQ(result.getW(), 6.5f);
+    EXPECT_FLOAT_EQ(v.getX(), 3.0f);
+    EXPECT_FLOAT_EQ(v.getY(), 4.0f);
+    EXPECT_FLOAT_EQ(v.getZ(), 5.0f);
+    EXPECT_FLOAT_EQ(v.getW(), 6.0f);
+}
+
 TEST(Vec4Test, SubtractSubtractsEachComponent)
 {
     Vec4 v(3.0f, 4.0f, 5.0f, 6.0f);
